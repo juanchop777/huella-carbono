@@ -11,6 +11,11 @@
                         {!! Form::checkbox('institucional_request', 1, null, ['id' => 'institucional_request']) !!}
                         {!! Form::label('institucional_request', 'Solicitud institucional') !!}
                     </div>
+                    <div class="form-group">
+                        {!! Form::label('change_environment', 'Cambio de ambiente') !!}
+                        {!! Form::select('environment', $unprogrammedEnvironments, null, ['class' => 'form-control', 'id' => 'environment', 'placeholder' => 'Buscar ambiente']) !!}
+                    </div>
+                    <div id="environment-info" class="mt-3"></div>
                     <div class="form-applicant" style="display: none">
                         <div class="form-group">
                             {!! Form::label('applicant', 'Solicitante') !!}
@@ -20,22 +25,6 @@
                             {!! Form::label('reason', 'Motivo') !!}
                             {!! Form::textarea('reason', null, ['class' => 'form-control', 'style' => 'height: 10px']) !!}
                         </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-6">
-                                    {!! Form::label('start_time', 'Hora inicio') !!}
-                                    {!! Form::time('start_time', null, ['class' => 'form-control']) !!}
-                                </div>
-                                <div class="col-6">
-                                    {!! Form::label('end_time', 'Hora fin') !!}
-                                    {!! Form::time('end_time', null, ['class' => 'form-control']) !!}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        {!! Form::label('change_environment', 'Cambio de ambiente') !!}
-                        {!! Form::select('environment', $unprogrammedEnvironments, null, ['class' => 'form-control', 'id' => 'environment', 'placeholder' => 'Buscar ambiente']) !!}
                     </div>
                     <div class="form-group">
                         <div class="row">
@@ -57,6 +46,7 @@
 </div>
 <script>
     $(document).ready(function() {
+        let existingSchedules = []; 
        
         $('.modal').on('shown.bs.modal', function () {
             var modal = $(this);
@@ -118,6 +108,78 @@
         $('.modal').on('click', '.select2-selection', function (e) {
             e.stopPropagation();
         });
+
+        $('#environment').on('change', function() {
+            var environment_id = $(this).val();
+            var date = $('#day').val();
+
+            var datas = {
+                environment_id : environment_id,
+                date : date,
+            }
+
+            $.ajax({
+                url: '{{ route('sigac.academic_coordination.reports.environments.environment_search_state') }}', // La ruta a la que se enviarán los datos
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: datas,
+                success: function(response) {
+                    let infoDiv = $('#environment-info');
+                    infoDiv.empty();
+                    existingSchedules = []; // Limpiamos la lista anterior
+
+                    if (response.length === 0) {
+                        infoDiv.html('<p class="text-muted">Este ambiente no tiene programaciones para este día.</p>');
+                        return;
+                    }
+
+                    infoDiv.append('<h5 class="text-center mb-3 fw-bold">Programación del ambiente</h5>');
+
+                    response.forEach(item => {
+                        // Guardamos cada horario como objeto para validación posterior
+                        existingSchedules.push({
+                            start: item.start_time,
+                            end: item.end_time
+                        });
+
+                        let courseCode = item.course?.code ?? 'N/A';
+                        let programName = item.course?.program?.name ?? 'N/A';
+
+                        let content = `
+                            <div class="card mb-2 p-2 border rounded shadow-sm">
+                                <p><strong>Curso:</strong> ${programName} - ${courseCode}</p>
+                                <p><strong>Fecha:</strong> ${item.date}</p>
+                                <p><strong>Hora:</strong> ${item.start_time} - ${item.end_time}</p>
+                                <p><strong>Modalidad:</strong> ${item.modality ?? 'N/A'}</p>
+                            </div>
+                        `;
+                        infoDiv.append(content);
+                    });
+                },
+                error: function(xhr) {
+                    // Manejar los errores aquí
+                    console.log('Error al enviar los datos:', xhr.responseText);
+                }
+            });
+        });
+
+        function hayTraslape(nuevaInicio, nuevaFin, horariosExistentes) {
+            const nuevaInicioTime = nuevaInicio;
+            const nuevaFinTime = nuevaFin;
+
+            for (let i = 0; i < horariosExistentes.length; i++) {
+                const existenteInicio = horariosExistentes[i].start;
+                const existenteFin = horariosExistentes[i].end;
+
+                // Verificar si se traslapan
+                if (nuevaInicioTime < existenteFin && nuevaFinTime > existenteInicio) {
+                    return true;
+                }
+            }
+            return false;
+        }
         
 
         $('#standcolor').on('click', function(event) {
@@ -128,16 +190,29 @@
             var applicant = $('#applicant').val();
             var reason = $('#reason').val();
             var date = $('#day').val();
-            var startTime = $('#start_time').val();
-            var endTime = $('#end_time').val();
             var programId = $('#programId').val();
             var environment = $('#environment').val();
             var startTimeEnvironment = $('#start_time_environment').val();
             var endTimeEnvironment = $('#end_time_environment').val();
 
+            // Validar traslape
+            if (hayTraslape(startTimeEnvironment, endTimeEnvironment, existingSchedules)) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Este ambiente ya tiene una programación en ese horario. Por favor, selecciona otra hora.',
+                    showConfirmButton: true,
+                    timer: 2000,
+                    customClass: {
+                        popup: 'my-custom-popup-class',
+                    },
+                });
+                return;
+            }
+
+
 
             if (institucionalRequest == 1){
-                if (!applicant || !reason || !date || !startTime || !endTime || !environment || !startTimeEnvironment || !endTimeEnvironment) {
+                if (!applicant || !reason || !date || !environment || !startTimeEnvironment || !endTimeEnvironment) {
                     // Mostrar alerta si algún campo está vacío
                     alert('Por favor, complete todos los campos obligatorios antes de enviar.');
                     return; // Detener la ejecución si hay campos vacíos
@@ -148,8 +223,6 @@
                     applicant: applicant,
                     date: date,
                     reason: reason,
-                    start_time: startTime,
-                    end_time: endTime,
                     program_id: programId,
                     environment: environment,
                     start_time_environment: startTimeEnvironment,

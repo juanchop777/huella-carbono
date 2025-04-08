@@ -17,6 +17,7 @@ use Modules\SIGAC\Entities\InstitucionalRequest;
 use Modules\SIGAC\Entities\InstructorProgramOutcome;
 use Modules\SICA\Entities\ClassEnvironment;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
@@ -193,34 +194,68 @@ class ReportController extends Controller
         ]);
     }
 
-    public function environments_search(Request $request){
+    public function environments_search(Request $request)
+    {
         $day = $request->day;
 
+        // Obtener todas las programaciones del día con sus relaciones
         $instructor_program = InstructorProgram::with('environment_instructor_programs.environment', 'instructor_program_people.person')
-        ->where('date', $day)
-        ->orderBy('created_at', 'Asc')
-        ->get();
+            ->where('date', $day)
+            ->orderBy('created_at', 'asc')
+            ->get();
 
-        $id = [];
+        $programIds = $instructor_program->pluck('id')->toArray();
 
-        foreach ($instructor_program as $p) {
-            $id[] = $p->id;
-        }
-
-        $programmedEnvironmentIds = EnvironmentInstructorProgram::whereIn('instructor_program_id', $id)->pluck('environment_id')->toArray();
-
+        // Ambientes externos
         $extern = ClassEnvironment::where('name', 'Externo')->pluck('id')->toArray();
 
-        // Obtener los ambientes que NO están programados
-        $unprogrammedEnvironments = Environment::whereNotIn('id', $programmedEnvironmentIds)->whereNotIn('class_environment_id', $extern)->get();
+        // Ambientes programados ese día (aunque sea una programación)
+        $programmedEnvironmentIds = EnvironmentInstructorProgram::whereIn('instructor_program_id', $programIds)
+            ->pluck('environment_id')
+            ->toArray();
 
-        $d = $unprogrammedEnvironments->map(function ($u){
-            $id = $u->id;
-            $name = $u->name;
+        // 1. Ambientes NO programados ese día
+        $unprogrammedEnvironmentIds = Environment::whereNotIn('id', $programmedEnvironmentIds)
+            ->whereNotIn('class_environment_id', $extern)
+            ->pluck('id')
+            ->toArray();
 
+        // 2. Ambientes programados parcialmente (menos de 9 horas en total)
+        $partialEnvironmentIds = InstructorProgram::where('date', $day)
+            ->with('environment_instructor_programs')
+            ->get()
+            ->flatMap(function ($program) {
+                return $program->environment_instructor_programs->map(function ($eip) use ($program) {
+                    $duration = \Carbon\Carbon::parse($program->start_time)->diffInMinutes(\Carbon\Carbon::parse($program->end_time));
+                    return [
+                        'environment_id' => $eip->environment_id,
+                        'duration' => $duration
+                    ];
+                });
+            })
+            ->groupBy('environment_id')
+            ->map(function ($items) {
+                return $items->sum('duration');
+            })
+            ->filter(function ($totalMinutes) {
+                return $totalMinutes < 540; // Menos de 9 horas
+            })
+            ->keys()
+            ->toArray();
+
+        // 3. Unir ambos resultados
+        $finalEnvironmentIds = array_unique(array_merge($unprogrammedEnvironmentIds, $partialEnvironmentIds));
+
+        // Obtener ambientes finales
+        $unprogrammedEnvironments = Environment::whereIn('id', $finalEnvironmentIds)
+            ->whereNotIn('class_environment_id', $extern)
+            ->get();
+
+        // Formato para el select
+        $d = $unprogrammedEnvironments->map(function ($u) {
             return [
-                'id' => $id,
-                'name' => $name
+                'id' => $u->id,
+                'name' => $u->name
             ];
         })->prepend(['id' => null, 'name' => 'Seleccione un ambiente'])->pluck('name', 'id');
 
@@ -230,6 +265,7 @@ class ReportController extends Controller
             'environments' => $unprogrammedEnvironments
         ]);
     }
+
 
     public function search_person (Request $request){
         $term = $request->input('applicant');
@@ -246,49 +282,61 @@ class ReportController extends Controller
 
         return response()->json($results);
     }
+    
+    public function environment_search_state (Request $request){
+        $environment_id = $request->environment_id;
+        $date = $request->date;
+
+        $environment = InstructorProgram::where('date',$date)->whereHas('environment_instructor_programs', function ($query) use ($environment_id) {
+            $query->where('environment_id', $environment_id);
+        })->with('course.program')->get();
+
+        return response()->json($environment);
+    }
 
     public function institucional_request_store(Request $request){
+
+        DB::beginTransaction();
+
         try {
             $institucional_request = $request->has('institucional_request') ? 1 : 0;
             $applicant = $request->input('applicant');
             $reason = $request->input('reason');
             $date = $request->input('date');
-            $start_time = $request->input('start_time');
-            $end_time = $request->input('end_time');
             $instructor_program_id = $request->input('program_id');
             $environment = $request->input('environment');
             $start_time_environment = $request->input('start_time_environment');
             $end_time_environment = $request->input('end_time_environment');
 
-            if($institucional_request == 1){
+            if($institucional_request == 1) {
                 $i = new InstitucionalRequest;
                 $i->person_id = $applicant;
                 $i->reason = $reason;
                 $i->date = $date;
-                $i->start_time = $start_time;
-                $i->end_time = $end_time;
-                $i->save();
-
-                $environment_instructor_program = EnvironmentInstructorProgram::where('instructor_program_id', $instructor_program_id)->first();
-                $environment_instructor_program->environment_id = $environment;
-                $environment_instructor_program->save();
-
-                $mensaje = 'Se reasigno el ambiente correctamente';
-                return response()->json(['success' => $mensaje]);
-            }else{
-                $environment_instructor_program = EnvironmentInstructorProgram::where('instructor_program_id', $instructor_program_id)->first();
-                $environment_instructor_program->environment_id = $environment;
-                $environment_instructor_program->save();
-
-                $mensaje = 'Se reasigno el ambiente correctamente';
-                return response()->json(['success' => $mensaje]);            
+                $i->start_time = $start_time_environment;
+                $i->end_time = $end_time_environment;
+                $i->save(); 
             }
+            $instructor_program = InstructorProgram::findOrFail($instructor_program_id);
+            $start_time = $start_time_environment . ':00';
+            $end_time = $end_time_environment . ':00';
             
+            $instructor_program->start_time = $start_time;
+            $instructor_program->end_time = $end_time;
+            $instructor_program->save();
             
-        } catch(\Exception $e){
-            DB::rollBack();
-            return redirect()->back()->with(['error'=> 'Error al eliminar la programación']);
 
+            $environment_instructor_program = EnvironmentInstructorProgram::where('instructor_program_id', $instructor_program_id)->first();
+            $environment_instructor_program->environment_id = $environment;
+            $environment_instructor_program->save();
+
+            DB::commit();
+
+            return response()->json(['success' => 'Se reasigno el ambiente correctamente']);            
+        } catch (\Exception $e) {
+            DB::rollBack();
+    
+            return response()->json(['error' => 'Ocurrió un error al procesar la solicitud.'], 500);
         }
     }
 
