@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use Modules\SICA\Http\Controllers\security\UserController;
+use Modules\SEQ\Http\Controllers\SEQController;
+use Modules\HUELLACARBONO\Http\Controllers\PublicController;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Laravel\Socialite\Facades\Socialite;
@@ -31,6 +33,8 @@ Route::middleware(['lang'])->group(function(){
     Route::get('/password/change/index', [UserController::class, 'change'])->name('cefa.password.change.index'); /* Vista Cambio de Contraseña */
     Route::post('/password/change/', [UserController::class, 'changesave'])->name('cefa.password.change'); /* Cambio de Contraseña */
 
+    // --------------  Ruta del módulo SEQ ---------------------------------
+    Route::get('/seq/index', [SEQController::class, 'index'])->name('cefa.seq.index');
 
     Route::get('/login_google', function () {
         return Socialite::driver('google')->redirect();

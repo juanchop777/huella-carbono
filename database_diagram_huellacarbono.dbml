@@ -1,0 +1,198 @@
+// ========================================
+// MÓDULO HUELLA DE CARBONO - SICEFA
+// Base de datos - Diagrama de relaciones
+// ========================================
+
+// Tabla de Unidades Productivas (Huella de Carbono)
+Table hc_productive_units {
+  id bigint [pk, increment]
+  productive_unit_id bigint [null, note: 'Relación con unidad original de SICA']
+  name varchar(255) [not null]
+  code varchar(50) [unique, not null]
+  description text [null]
+  leader_user_id bigint [null, note: 'Usuario líder de la unidad']
+  is_active boolean [default: true]
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Unidades productivas específicas para gestión de huella de carbono. Pueden relacionarse con las unidades originales de SICA o ser independientes.'
+}
+
+// Tabla de Factores de Emisión
+Table hc_emission_factors {
+  id bigint [pk, increment]
+  name varchar(255) [not null, note: 'Ej: Consumo de agua, energía, etc']
+  code varchar(50) [unique, not null]
+  unit varchar(50) [not null, note: 'L, Kw/h, galón, Kg, Und']
+  factor decimal(10,7) [not null, note: 'Coeficiente de conversión a CO2']
+  description text [null]
+  requires_percentage boolean [default: false, note: 'Para fertilizantes que requieren % nitrógeno']
+  is_active boolean [default: true]
+  order integer [default: 0, note: 'Orden de visualización']
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Factores para calcular emisiones de CO2. Cada variable tiene un coeficiente que convierte actividad en kg CO2.'
+}
+
+// Tabla de Consumos Diarios
+Table hc_daily_consumptions {
+  id bigint [pk, increment]
+  productive_unit_id bigint [not null]
+  emission_factor_id bigint [not null]
+  registered_by bigint [not null, note: 'Usuario que registró']
+  consumption_date date [not null]
+  quantity decimal(10,3) [not null, note: 'Cantidad consumida']
+  nitrogen_percentage decimal(5,2) [null, note: '% Nitrógeno solo para fertilizantes']
+  co2_generated decimal(10,3) [not null, note: 'CO2 calculado automáticamente']
+  observations text [null]
+  created_at timestamp
+  updated_at timestamp
+  
+  Indexes {
+    (productive_unit_id, consumption_date) [name: 'idx_unit_date']
+  }
+  
+  Note: 'Registros diarios de consumos por unidad productiva. Los líderes registran aquí.'
+}
+
+// Tabla de Cálculos Personales de Huella
+Table hc_personal_carbon_calculations {
+  id bigint [pk, increment]
+  name varchar(255) [null, note: 'Nombre del visitante (opcional)']
+  email varchar(255) [null]
+  water_consumption decimal(10,3) [default: 0]
+  energy_consumption decimal(10,3) [default: 0]
+  gasoline_consumption decimal(10,3) [default: 0]
+  diesel_consumption decimal(10,3) [default: 0]
+  waste_generation decimal(10,3) [default: 0]
+  number_of_animals integer [default: 0]
+  synthetic_fertilizers decimal(10,3) [default: 0]
+  fertilizer_nitrogen_percentage decimal(5,2) [null]
+  insecticides decimal(10,3) [default: 0]
+  fungicides decimal(10,3) [default: 0]
+  herbicides decimal(10,3) [default: 0]
+  total_co2 decimal(10,3) [not null]
+  period varchar(50) [default: 'monthly', note: 'monthly, weekly, yearly']
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Cálculos de huella personal desde la calculadora pública. No requiere autenticación.'
+}
+
+// ========================================
+// TABLAS EXTERNAS (Sistema SICA)
+// ========================================
+
+// Tabla de Usuarios (Sistema Principal)
+Table users {
+  id bigint [pk, increment]
+  person_id bigint [not null]
+  nickname varchar(255)
+  email varchar(255) [unique]
+  password varchar(255)
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Tabla de usuarios del sistema principal SICEFA. Administra autenticación.'
+}
+
+// Tabla de Unidades Productivas Originales (SICA)
+Table productive_units {
+  id bigint [pk, increment]
+  name varchar(255) [unique, not null]
+  description text
+  icon varchar(255) [null]
+  person_id bigint [not null]
+  sector_id bigint [not null]
+  farm_id bigint [not null]
+  deleted_at timestamp [null]
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Unidades productivas del sistema SICA original. Usadas por múltiples módulos.'
+}
+
+// Tabla de Roles
+Table roles {
+  id bigint [pk, increment]
+  name varchar(255)
+  slug varchar(255) [unique, note: 'huellacarbono.superadmin, huellacarbono.admin, huellacarbono.leader']
+  description text
+  full_access enum('Si','No')
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Sistema de roles. Huella de Carbono usa 3 roles: SuperAdmin, Admin y Leader.'
+}
+
+// Tabla pivote Roles-Usuarios
+Table role_user {
+  id bigint [pk, increment]
+  user_id bigint [not null]
+  role_id bigint [not null]
+  created_at timestamp
+  updated_at timestamp
+  
+  Indexes {
+    (user_id, role_id) [unique]
+  }
+}
+
+// ========================================
+// RELACIONES (Foreign Keys)
+// ========================================
+
+// Relaciones de hc_productive_units
+Ref: hc_productive_units.productive_unit_id > productive_units.id [delete: set null, note: 'Relación opcional con unidad original SICA']
+Ref: hc_productive_units.leader_user_id > users.id [delete: set null, note: 'Usuario líder de la unidad']
+
+// Relaciones de hc_daily_consumptions
+Ref: hc_daily_consumptions.productive_unit_id > hc_productive_units.id [delete: cascade, note: 'Unidad que generó el consumo']
+Ref: hc_daily_consumptions.emission_factor_id > hc_emission_factors.id [delete: cascade, note: 'Factor usado para calcular CO2']
+Ref: hc_daily_consumptions.registered_by > users.id [delete: cascade, note: 'Usuario que registró (líder)']
+
+// Relaciones de role_user (pivote)
+Ref: role_user.user_id > users.id [delete: cascade]
+Ref: role_user.role_id > roles.id [delete: cascade]
+
+// ========================================
+// NOTAS Y DOCUMENTACIÓN
+// ========================================
+
+Note huellacarbono_module {
+  '''
+  MÓDULO HUELLA DE CARBONO - SICEFA
+  ==================================
+  
+  PROPÓSITO:
+  Gestionar y calcular la huella de carbono del Centro de Formación
+  Agroindustrial "La Angostura".
+  
+  FUNCIONALIDADES PRINCIPALES:
+  - Registro diario de consumos por unidad productiva
+  - Cálculo automático de CO2 generado
+  - Gráficas históricas (semanal, mensual, trimestral, anual)
+  - Reportes exportables (PDF/Excel)
+  - Calculadora personal de huella de carbono
+  - Estadísticas públicas
+  
+  ROLES:
+  • SuperAdmin: Control total (gestión, edición, usuarios)
+  • Admin: Solo lectura y reportes
+  • Leader: Registro de consumos de SU unidad
+  • Visitantes: Acceso público (calculadora, estadísticas)
+  
+  DATOS HISTÓRICOS:
+  - Período: 2022-2024
+  - Registros: ~28,620
+  - Total CO2: ~2,576,285 kg
+  - Unidades: 36 activas
+  - Factores: 10 variables
+  '''
+}
+
+
+
+
+

@@ -1,0 +1,13 @@
+{
+    "name": "SEQ",
+    "alias": "seq",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\SEQ\\Providers\\SEQServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

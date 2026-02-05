@@ -15,6 +15,7 @@
     "HANGARAUTO": false,
     "GTH": true,
     "HDC": true,
-    "PQRS": true
+    "PQRS": true,
+    "SEQ": true,
+    "HUELLACARBONO": true
 }
-
