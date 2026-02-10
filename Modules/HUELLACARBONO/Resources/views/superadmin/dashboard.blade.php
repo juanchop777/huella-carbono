@@ -6,7 +6,7 @@
         <!-- Header -->
         <div class="mb-8">
             <h1 class="text-4xl font-bold text-gray-900 mb-2">
-                <i class="fas fa-user-shield text-red-600"></i> Panel SuperAdmin
+                <i class="fas fa-user-shield text-red-600"></i> Panel Admin
             </h1>
             <p class="text-gray-600">Gestión completa del módulo Huella de Carbono</p>
         </div>
@@ -86,7 +86,7 @@
                             <p class="text-sm text-blue-800">{{ $pendingRequestsCount }} solicitud(es) de líderes para agregar consumos en fechas pasadas</p>
                         </div>
                     </div>
-                    <a href="{{ route('cefa.huellacarbono.superadmin.requests.index') }}" 
+                    <a href="{{ route('cefa.huellacarbono.admin.requests.index') }}" 
                        class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition">
                         <i class="fas fa-check-double mr-2"></i>Revisar solicitudes
                     </a>
@@ -99,7 +99,7 @@
         <!-- Quick Actions -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <!-- Unidades Productivas -->
-            <a href="{{ route('cefa.huellacarbono.superadmin.units.index') }}" 
+            <a href="{{ route('cefa.huellacarbono.admin.units.index') }}" 
                class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all transform hover:-translate-y-1">
                 <div class="flex items-center mb-4">
                     <div class="bg-green-100 w-12 h-12 rounded-xl flex items-center justify-center mr-4">
@@ -114,7 +114,7 @@
             </a>
 
             <!-- Factores de Emisión -->
-            <a href="{{ route('cefa.huellacarbono.superadmin.factors.index') }}" 
+            <a href="{{ route('cefa.huellacarbono.admin.factors.index') }}" 
                class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all transform hover:-translate-y-1">
                 <div class="flex items-center mb-4">
                     <div class="bg-blue-100 w-12 h-12 rounded-xl flex items-center justify-center mr-4">
@@ -129,7 +129,7 @@
             </a>
 
             <!-- Gráficas -->
-            <a href="{{ route('cefa.huellacarbono.superadmin.charts.index') }}" 
+            <a href="{{ route('cefa.huellacarbono.admin.charts.index') }}" 
                class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all transform hover:-translate-y-1">
                 <div class="flex items-center mb-4">
                     <div class="bg-purple-100 w-12 h-12 rounded-xl flex items-center justify-center mr-4">
@@ -144,7 +144,7 @@
             </a>
             
             <!-- Reportes -->
-            <a href="{{ route('cefa.huellacarbono.superadmin.reports.index') }}" 
+            <a href="{{ route('cefa.huellacarbono.admin.reports.index') }}" 
                class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all transform hover:-translate-y-1">
                 <div class="flex items-center mb-4">
                     <div class="bg-purple-100 w-12 h-12 rounded-xl flex items-center justify-center mr-4">
@@ -166,12 +166,12 @@
                     <i class="fas fa-clock text-blue-600 mr-2"></i>
                     Últimos Registros
                 </h2>
-                <a href="{{ route('cefa.huellacarbono.superadmin.consumptions.index') }}" 
+                <a href="{{ route('cefa.huellacarbono.admin.consumptions.index') }}" 
                    class="text-blue-600 hover:text-blue-700 font-medium">
                     Ver todos →
                 </a>
             </div>
-            <p class="text-xs text-gray-500 mb-3">Consumos recientes de todas las unidades (ordenados por actividad)</p>
+            <p class="text-xs text-gray-500 mb-3">Consumos recientes de todas las unidades (del más reciente al más antiguo por fecha)</p>
             <div class="overflow-x-auto">
                 <table class="w-full">
                     <thead class="bg-gray-50">
@@ -188,7 +188,14 @@
                         @forelse($recentConsumptions as $consumption)
                         <tr class="hover:bg-gray-50 transition">
                             <td class="px-4 py-3 text-sm text-gray-900">
-                                {{ $consumption->consumption_date->format('d/m/Y') }}
+                                <div class="flex flex-col gap-1">
+                                    <span>{{ $consumption->consumption_date->format('d/m/Y') }}</span>
+                                    @if($consumption->isDelayFromAdminApproval())
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 w-fit" title="Registro agregado en fecha distinta con permiso del Admin">
+                                        <i class="fas fa-clock mr-1"></i> Retraso
+                                    </span>
+                                    @endif
+                                </div>
                             </td>
                             <td class="px-4 py-3 text-sm text-gray-900">
                                 {{ $consumption->productiveUnit->name ?? 'N/A' }}

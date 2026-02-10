@@ -24,21 +24,12 @@ class RolesTableSeeder extends Seeder
             return;
         }
 
-        // Rol SuperAdmin
-        $role_superadmin = Role::updateOrCreate(['slug' => 'huellacarbono.superadmin'], [
-            'name' => 'SuperAdmin Huella de Carbono',
-            'description' => 'SuperAdministrador del módulo Huella de Carbono - Control total',
-            'description_english' => 'Carbon Footprint SuperAdmin - Full control',
-            'full_access' => 'Si',
-            'app_id' => $app->id
-        ]);
-
-        // Rol Admin
+        // Rol Admin (control total del módulo)
         $role_admin = Role::updateOrCreate(['slug' => 'huellacarbono.admin'], [
             'name' => 'Admin Huella de Carbono',
-            'description' => 'Administrador del módulo Huella de Carbono - Visualización y reportes',
-            'description_english' => 'Carbon Footprint Admin - View and reports',
-            'full_access' => 'No',
+            'description' => 'Administrador del módulo Huella de Carbono - Control total',
+            'description_english' => 'Carbon Footprint Admin - Full control',
+            'full_access' => 'Si',
             'app_id' => $app->id
         ]);
 
@@ -56,7 +47,7 @@ class RolesTableSeeder extends Seeder
         $this->command->info('Para asignar roles a usuarios, ejecuta:');
         $this->command->info('php artisan tinker');
         $this->command->info('$user = User::where("email", "tu@email.com")->first();');
-        $this->command->info('$role = Modules\SICA\Entities\Role::where("slug", "huellacarbono.superadmin")->first();');
+        $this->command->info('$role = Modules\SICA\Entities\Role::where("slug", "huellacarbono.admin")->first();');
         $this->command->info('$user->roles()->attach($role->id);');
     }
 }

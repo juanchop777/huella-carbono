@@ -66,8 +66,7 @@
                                     @endphp
                                     @forelse($hcRoles as $role)
                                         <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold 
-                                              {{ $role->slug == 'huellacarbono.superadmin' ? 'bg-red-100 text-red-800' : 
-                                                 ($role->slug == 'huellacarbono.admin' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800') }}">
+                                              {{ $role->slug == 'huellacarbono.admin' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }}">
                                             {{ $role->name }}
                                         </span>
                                     @empty
@@ -102,7 +101,7 @@
 
         <!-- Botón Volver -->
         <div class="mt-8">
-            <a href="{{ route('cefa.huellacarbono.superadmin.dashboard') }}" 
+            <a href="{{ route('cefa.huellacarbono.admin.dashboard') }}" 
                class="inline-flex items-center px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-xl transition">
                 <i class="fas fa-arrow-left mr-2"></i> Volver al Dashboard
             </a>
@@ -149,7 +148,7 @@
 
 @section('script')
 <script>
-var assignRoleUrl = "{{ route('cefa.huellacarbono.superadmin.users.assign_role', ['id' => '__ID__']) }}";
+var assignRoleUrl = "{{ route('cefa.huellacarbono.admin.users.assign_role', ['id' => '__ID__']) }}";
 
 function openAssignRoleModal(btn) {
     var userId = btn.getAttribute('data-user-id');

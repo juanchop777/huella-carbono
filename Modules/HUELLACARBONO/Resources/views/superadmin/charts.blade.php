@@ -122,7 +122,7 @@
 
         <!-- Botón Volver -->
         <div class="mt-8">
-            <a href="{{ route('cefa.huellacarbono.superadmin.dashboard') }}" 
+            <a href="{{ route('cefa.huellacarbono.admin.dashboard') }}" 
                class="inline-flex items-center px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-xl transition">
                 <i class="fas fa-arrow-left mr-2"></i> Volver al Dashboard
             </a>
@@ -294,7 +294,7 @@ yearlyChart = new Chart(document.getElementById('yearlyComparisonChart'), {
 function updateCharts() {
     const viewType = document.getElementById('viewType').value;
     const unitId = document.getElementById('unitFilter').value;
-    const url = '{{ route("cefa.huellacarbono.superadmin.charts.data") }}';
+    const url = '{{ route("cefa.huellacarbono.admin.charts.data") }}';
     const csrf = '{{ csrf_token() }}';
 
     if (typeof showToast === 'function') showToast('info', 'Actualizando gráficas...');

@@ -55,28 +55,27 @@ class CreateSuperAdminSeeder extends Seeder
             $this->command->info('✓ Usuario creado: JuanMa');
         }
 
-        // 3. Asignar rol de SuperAdmin
-        $role = Role::where('slug', 'huellacarbono.superadmin')->first();
-        
+        // 3. Asignar rol de Admin
+        $role = Role::where('slug', 'huellacarbono.admin')->first();
+
         if ($role) {
-            // Usar syncWithoutDetaching para no eliminar otros roles
             $user->roles()->syncWithoutDetaching([$role->id]);
-            $this->command->info('✓ Rol SuperAdmin asignado exitosamente.');
+            $this->command->info('✓ Rol Admin asignado exitosamente.');
         } else {
-            $this->command->error('× El rol huellacarbono.superadmin no existe.');
+            $this->command->error('× El rol huellacarbono.admin no existe. Ejecuta RolesTableSeeder primero.');
             return;
         }
 
         $this->command->info('');
         $this->command->info('╔═══════════════════════════════════════════════════════╗');
-        $this->command->info('║           SUPERADMIN CREADO EXITOSAMENTE              ║');
+        $this->command->info('║           ADMIN CREADO EXITOSAMENTE                   ║');
         $this->command->info('╠═══════════════════════════════════════════════════════╣');
         $this->command->info('║  Usuario:  Juan Manuel Mosquera Vargas                ║');
         $this->command->info('║  Email:    catfished03@gmail.com                      ║');
         $this->command->info('║  Password: Jumo2302                                   ║');
-        $this->command->info('║  Rol:      SuperAdmin Huella de Carbono               ║');
+        $this->command->info('║  Rol:      Admin Huella de Carbono                    ║');
         $this->command->info('╠═══════════════════════════════════════════════════════╣');
-        $this->command->info('║  Acceso:   /huellacarbono/superadmin/dashboard        ║');
+        $this->command->info('║  Acceso:   /huellacarbono/admin/dashboard             ║');
         $this->command->info('╚═══════════════════════════════════════════════════════╝');
         $this->command->info('');
     }

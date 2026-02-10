@@ -79,7 +79,7 @@
                 </h3>
                 <a href="{{ route('cefa.huellacarbono.leader.history') }}" class="text-white/90 hover:text-white text-sm font-medium">Ver historial →</a>
             </div>
-            <p class="text-xs text-gray-500 px-6 py-2 bg-gray-50">Consumos de {{ $unit->name }} (ordenados por actividad reciente)</p>
+            <p class="text-xs text-gray-500 px-6 py-2 bg-gray-50">Consumos de {{ $unit->name }} (del más reciente al más antiguo por fecha)</p>
             <div class="overflow-x-auto">
                 <table class="w-full">
                     <thead class="bg-gray-50">
@@ -95,7 +95,14 @@
                         @forelse($recentConsumptions as $consumption)
                         <tr class="hover:bg-gray-50 transition">
                             <td class="px-6 py-4 text-sm font-semibold text-gray-900">
-                                {{ $consumption->consumption_date->format('d/m/Y') }}
+                                <div class="flex flex-col gap-1">
+                                    <span>{{ $consumption->consumption_date->format('d/m/Y') }}</span>
+                                    @if($consumption->isDelayFromAdminApproval())
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 w-fit" title="Registro agregado en fecha distinta con permiso del Admin">
+                                        <i class="fas fa-clock mr-1"></i> Retraso
+                                    </span>
+                                    @endif
+                                </div>
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center">

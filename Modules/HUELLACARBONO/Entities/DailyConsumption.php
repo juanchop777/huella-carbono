@@ -55,6 +55,15 @@ class DailyConsumption extends Model
     }
 
     /**
+     * Indica si el registro fue agregado como retraso (aprobado por Admin en fecha distinta al consumo diario)
+     */
+    public function isDelayFromAdminApproval(): bool
+    {
+        $obs = $this->observations ?? '';
+        return str_contains($obs, 'Registro aprobado por Admin') || str_contains($obs, 'solicitud #');
+    }
+
+    /**
      * Calcular automáticamente el CO2 al guardar
      */
     protected static function boot()

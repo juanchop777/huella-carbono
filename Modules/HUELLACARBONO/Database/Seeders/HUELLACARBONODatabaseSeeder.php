@@ -21,7 +21,6 @@ class HUELLACARBONODatabaseSeeder extends Seeder
         $this->call(ProductiveUnitsTableSeeder::class);
         $this->call(RolesTableSeeder::class);
         $this->call(CreateSuperAdminSeeder::class);
-        $this->call(CreateAdminSeeder::class);
         $this->call(CreateLeaderSeeder::class);
     }
 }

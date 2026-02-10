@@ -140,7 +140,7 @@
 
         <!-- Botón Volver -->
         <div class="mt-8">
-            <a href="{{ route('cefa.huellacarbono.superadmin.dashboard') }}" 
+            <a href="{{ route('cefa.huellacarbono.admin.dashboard') }}" 
                class="inline-flex items-center px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-xl transition">
                 <i class="fas fa-arrow-left mr-2"></i> Volver al Dashboard
             </a>
@@ -404,7 +404,7 @@ function toggleStatus(unitId, newStatus) {
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            fetch(`/huellacarbono/superadmin/unidades/${unitId}/toggle-status`, {
+            fetch(`/huellacarbono/admin/unidades/${unitId}/toggle-status`, {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -449,7 +449,7 @@ document.getElementById('createUnitForm').addEventListener('submit', function(e)
         leader_user_id: document.getElementById('create_unit_leader').value || null
     };
     
-    fetch('/huellacarbono/superadmin/unidades/store', {
+    fetch('/huellacarbono/admin/unidades/store', {
         method: 'POST',
         headers: {
             'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -486,7 +486,7 @@ document.getElementById('assignLeaderForm').addEventListener('submit', function(
     const unitId = document.getElementById('unit_id').value;
     const formData = new FormData(this);
     
-    fetch(`/huellacarbono/superadmin/unidades/${unitId}/asignar-lider`, {
+    fetch(`/huellacarbono/admin/unidades/${unitId}/asignar-lider`, {
         method: 'POST',
         headers: {
             'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -521,7 +521,7 @@ document.getElementById('editUnitForm').addEventListener('submit', function(e) {
         description: document.getElementById('edit_unit_description').value
     };
     
-    fetch(`/huellacarbono/superadmin/unidades/${unitId}/update`, {
+    fetch(`/huellacarbono/admin/unidades/${unitId}/update`, {
         method: 'PUT',
         headers: {
             'X-CSRF-TOKEN': '{{ csrf_token() }}',

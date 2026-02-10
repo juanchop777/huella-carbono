@@ -99,7 +99,7 @@
         </div>
 
         <div class="mt-8">
-            <a href="{{ route('cefa.huellacarbono.superadmin.dashboard') }}" 
+            <a href="{{ route('cefa.huellacarbono.admin.dashboard') }}" 
                class="inline-flex items-center px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-xl transition">
                 <i class="fas fa-arrow-left mr-2"></i> Volver al Dashboard
             </a>
@@ -142,8 +142,8 @@
 
 @section('script')
 <script>
-var approveUrl = "{{ route('cefa.huellacarbono.superadmin.requests.approve', ['id' => '__ID__']) }}";
-var rejectUrl = "{{ route('cefa.huellacarbono.superadmin.requests.reject', ['id' => '__ID__']) }}";
+var approveUrl = "{{ route('cefa.huellacarbono.admin.requests.approve', ['id' => '__ID__']) }}";
+var rejectUrl = "{{ route('cefa.huellacarbono.admin.requests.reject', ['id' => '__ID__']) }}";
 
 var confirmModal = document.getElementById('confirmModal');
 var confirmModalApproveHeader = document.getElementById('confirmModalApproveHeader');

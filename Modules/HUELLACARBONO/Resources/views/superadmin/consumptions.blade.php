@@ -79,7 +79,14 @@
                         @forelse($consumptions as $consumption)
                         <tr class="hover:bg-gray-50 transition">
                             <td class="px-6 py-4 text-sm font-semibold text-gray-900">
-                                {{ $consumption->consumption_date->format('d/m/Y') }}
+                                <div class="flex flex-col gap-1">
+                                    <span>{{ $consumption->consumption_date->format('d/m/Y') }}</span>
+                                    @if($consumption->isDelayFromAdminApproval())
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800" title="Registro agregado en fecha distinta con permiso del Admin">
+                                        <i class="fas fa-clock mr-1"></i> Retraso
+                                    </span>
+                                    @endif
+                                </div>
                             </td>
                             <td class="px-6 py-4">
                                 <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
@@ -136,7 +143,7 @@
 
         <!-- Botón Volver -->
         <div class="mt-8">
-            <a href="{{ route('cefa.huellacarbono.superadmin.dashboard') }}" 
+            <a href="{{ route('cefa.huellacarbono.admin.dashboard') }}" 
                class="inline-flex items-center px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-xl transition">
                 <i class="fas fa-arrow-left mr-2"></i> Volver al Dashboard
             </a>
@@ -159,7 +166,7 @@ function deleteConsumption(id) {
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            fetch(`/huellacarbono/superadmin/consumos/${id}/eliminar`, {
+            fetch(`/huellacarbono/admin/consumos/${id}/eliminar`, {
                 method: 'DELETE',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',

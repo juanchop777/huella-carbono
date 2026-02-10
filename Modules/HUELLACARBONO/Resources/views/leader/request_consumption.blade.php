@@ -16,9 +16,9 @@
             <div class="flex items-start">
                 <i class="fas fa-info-circle text-amber-600 text-2xl mr-3"></i>
                 <div>
-                    <h4 class="font-semibold text-amber-900 mb-1">Requiere aprobación del SuperAdmin</h4>
+                    <h4 class="font-semibold text-amber-900 mb-1">Requiere aprobación del Admin</h4>
                     <p class="text-sm text-amber-800">
-                        Solo puedes registrar el consumo del <strong>día actual</strong> directamente. Para agregar consumos de días anteriores debes enviar esta solicitud; un SuperAdmin la revisará y aprobará o rechazará.
+                        Solo puedes registrar el consumo del <strong>día actual</strong> directamente. Para agregar consumos de días anteriores debes enviar esta solicitud; un Admin la revisará y aprobará o rechazará.
                     </p>
                 </div>
             </div>

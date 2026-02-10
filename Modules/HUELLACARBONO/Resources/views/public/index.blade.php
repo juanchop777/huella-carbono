@@ -284,30 +284,21 @@
             </h3>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                @if(checkRol('huellacarbono.superadmin'))
-                <a href="{{ route('cefa.huellacarbono.superadmin.dashboard') }}" 
-                   class="bg-white hover:bg-gray-50 text-gray-900 rounded-2xl p-6 text-center transform hover:scale-105 transition-all shadow-lg">
-                    <i class="fas fa-user-shield text-5xl text-red-600 mb-4"></i>
-                    <h4 class="text-xl font-bold">Panel SuperAdmin</h4>
-                    <p class="text-sm text-gray-600 mt-2">Gestión completa del sistema</p>
-                </a>
-                @endif
-                
-                @if(checkRol('huellacarbono.admin'))
-                <a href="{{ route('cefa.huellacarbono.admin.dashboard') }}" 
-                   class="bg-white hover:bg-gray-50 text-gray-900 rounded-2xl p-6 text-center transform hover:scale-105 transition-all shadow-lg">
-                    <i class="fas fa-user-tie text-5xl text-blue-600 mb-4"></i>
-                    <h4 class="text-xl font-bold">Panel Admin</h4>
-                    <p class="text-sm text-gray-600 mt-2">Visualización y reportes</p>
-                </a>
-                @endif
-                
                 @if(checkRol('huellacarbono.leader'))
-                <a href="{{ route('cefa.huellacarbono.leader.dashboard') }}" 
+                <a href="{{ route('cefa.huellacarbono.leader.dashboard') }}"
                    class="bg-white hover:bg-gray-50 text-gray-900 rounded-2xl p-6 text-center transform hover:scale-105 transition-all shadow-lg">
                     <i class="fas fa-user-cog text-5xl text-green-600 mb-4"></i>
                     <h4 class="text-xl font-bold">Panel Líder</h4>
                     <p class="text-sm text-gray-600 mt-2">Registro de consumos</p>
+                </a>
+                @endif
+
+                @if(checkRol('huellacarbono.admin') && !checkRol('huellacarbono.leader'))
+                <a href="{{ route('cefa.huellacarbono.admin.dashboard') }}" 
+                   class="bg-white hover:bg-gray-50 text-gray-900 rounded-2xl p-6 text-center transform hover:scale-105 transition-all shadow-lg">
+                    <i class="fas fa-user-shield text-5xl text-red-600 mb-4"></i>
+                    <h4 class="text-xl font-bold">Panel Admin</h4>
+                    <p class="text-sm text-gray-600 mt-2">Gestión completa del sistema</p>
                 </a>
                 @endif
             </div>

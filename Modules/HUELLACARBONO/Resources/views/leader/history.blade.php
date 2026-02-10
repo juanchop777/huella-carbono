@@ -74,11 +74,18 @@
                         @forelse($consumptions as $consumption)
                         <tr class="hover:bg-gray-50 transition">
                             <td class="px-6 py-4">
-                                <div class="flex items-center">
-                                    <i class="fas fa-calendar text-blue-500 mr-2"></i>
-                                    <span class="text-sm font-semibold text-gray-900">
-                                        {{ $consumption->consumption_date->format('d/m/Y') }}
+                                <div class="flex flex-col gap-1">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-calendar text-blue-500 mr-2"></i>
+                                        <span class="text-sm font-semibold text-gray-900">
+                                            {{ $consumption->consumption_date->format('d/m/Y') }}
+                                        </span>
+                                    </div>
+                                    @if($consumption->isDelayFromAdminApproval())
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 w-fit" title="Registro agregado en fecha distinta con permiso del Admin">
+                                        <i class="fas fa-clock mr-1"></i> Retraso
                                     </span>
+                                    @endif
                                 </div>
                             </td>
                             <td class="px-6 py-4">

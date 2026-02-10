@@ -191,7 +191,7 @@
 
         <!-- Botón Volver -->
         <div class="mt-8">
-            <a href="{{ route('cefa.huellacarbono.superadmin.dashboard') }}" 
+            <a href="{{ route('cefa.huellacarbono.admin.dashboard') }}" 
                class="inline-flex items-center px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-xl transition">
                 <i class="fas fa-arrow-left mr-2"></i> Volver al Dashboard
             </a>
@@ -219,7 +219,7 @@ $('#generalReportForm').on('submit', function(e) {
     
     showToast('info', 'Generando reporte PDF...');
     
-    window.open('/huellacarbono/superadmin/reportes/exportar-pdf?' + formData, '_blank');
+    window.open('/huellacarbono/admin/reportes/exportar-pdf?' + formData, '_blank');
     
     setTimeout(() => {
         showToast('success', 'Reporte generado');
@@ -231,7 +231,7 @@ $('#excelReportForm').on('submit', function(e) {
     e.preventDefault();
     var formData = $(this).serialize();
     showToast('info', 'Generando reporte Excel...');
-    window.open("{{ url('/huellacarbono/superadmin/reportes/exportar-excel') }}?" + formData, '_blank');
+    window.open("{{ url('/huellacarbono/admin/reportes/exportar-excel') }}?" + formData, '_blank');
     setTimeout(function() { showToast('success', 'Reporte generado'); }, 1500);
 });
 
@@ -239,8 +239,8 @@ $('#excelReportForm').on('submit', function(e) {
 (function() {
     var form = document.getElementById('unitReportForm');
     if (!form) return;
-    var basePdf = "{{ url('/huellacarbono/superadmin/reportes/exportar-pdf') }}";
-    var baseExcel = "{{ url('/huellacarbono/superadmin/reportes/exportar-excel') }}";
+    var basePdf = "{{ url('/huellacarbono/admin/reportes/exportar-pdf') }}";
+    var baseExcel = "{{ url('/huellacarbono/admin/reportes/exportar-excel') }}";
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         var unitSelect = form.querySelector('select[name="unit_id"]');

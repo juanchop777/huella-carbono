@@ -18,11 +18,8 @@ class PublicController extends Controller
      */
     public function index()
     {
-        // Si el usuario está autenticado, redirigir según su rol (mismo orden que el navbar: Líder antes que Admin)
+        // Si el usuario está autenticado, redirigir según su rol (Líder tiene prioridad: no ver Admin)
         if (Auth::check()) {
-            if (checkRol('huellacarbono.superadmin')) {
-                return redirect()->route('cefa.huellacarbono.superadmin.dashboard');
-            }
             if (checkRol('huellacarbono.leader')) {
                 return redirect()->route('cefa.huellacarbono.leader.dashboard');
             }

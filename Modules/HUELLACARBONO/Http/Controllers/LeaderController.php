@@ -33,10 +33,11 @@ class LeaderController extends Controller
         
         $weeklyTotal = $unit->calculateCarbonFootprint($startOfWeek, $endOfWeek);
         
-        // Últimos registros (orden por updated_at: nuevos y modificaciones siempre arriba)
+        // Últimos registros: del más reciente al más antiguo por fecha de consumo
         $recentConsumptions = $unit->dailyConsumptions()
             ->with(['emissionFactor', 'registeredBy'])
-            ->orderBy('updated_at', 'desc')
+            ->orderBy('consumption_date', 'desc')
+            ->orderBy('id', 'desc')
             ->limit(10)
             ->get();
 
@@ -233,6 +234,7 @@ class LeaderController extends Controller
             ->whereBetween('consumption_date', [$startDate, $endDate])
             ->with(['emissionFactor', 'registeredBy'])
             ->orderBy('consumption_date', 'desc')
+            ->orderBy('id', 'desc')
             ->paginate(20);
 
         $totalCO2 = $unit->calculateCarbonFootprint($startDate, $endDate);

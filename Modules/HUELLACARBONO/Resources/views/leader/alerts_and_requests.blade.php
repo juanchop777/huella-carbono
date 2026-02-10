@@ -7,7 +7,7 @@
             <h1 class="text-4xl font-bold text-gray-900 mb-2">
                 <i class="fas fa-bell text-amber-600"></i> Alertas
             </h1>
-            <p class="text-gray-600">Días sin reporte de consumo y estado de tus solicitudes al SuperAdmin.</p>
+            <p class="text-gray-600">Días sin reporte de consumo y estado de tus solicitudes al Admin.</p>
         </div>
 
         @if(count($daysWithoutReport) > 0)
@@ -28,7 +28,7 @@
                         @endforeach
                     </ul>
                     <p class="text-sm text-amber-800 mb-2">
-                        Para agregar consumos en esas fechas debes <strong>solicitar aprobación del SuperAdmin</strong>.
+                        Para agregar consumos en esas fechas debes <strong>solicitar aprobación del Admin</strong>.
                     </p>
                     <a href="{{ route('cefa.huellacarbono.leader.request_form') }}" 
                        class="inline-flex items-center px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-lg transition">
@@ -60,7 +60,7 @@
                 </a>
             </div>
             <div class="px-6 py-4">
-                <p class="text-gray-600 text-sm mb-4">Aquí ves si el SuperAdmin <strong>aceptó</strong> o <strong>rechazó</strong> cada solicitud que enviaste para agregar consumos en fechas pasadas.</p>
+                <p class="text-gray-600 text-sm mb-4">Aquí ves si el Admin <strong>aceptó</strong> o <strong>rechazó</strong> cada solicitud que enviaste para agregar consumos en fechas pasadas.</p>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full">
@@ -69,7 +69,7 @@
                             <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Fecha solicitud</th>
                             <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Fecha a reportar</th>
                             <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Variables</th>
-                            <th class="px-6 py-3 text-center text-xs font-semibold text-gray-600 uppercase">Respuesta del SuperAdmin</th>
+                            <th class="px-6 py-3 text-center text-xs font-semibold text-gray-600 uppercase">Respuesta del Admin</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
@@ -87,12 +87,12 @@
                                 <span class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold bg-green-100 text-green-800">
                                     <i class="fas fa-check-circle mr-2"></i> Aceptada
                                 </span>
-                                <p class="text-xs text-gray-500 mt-1">El SuperAdmin aprobó tu solicitud</p>
+                                <p class="text-xs text-gray-500 mt-1">El Admin aprobó tu solicitud</p>
                                 @elseif($req->status === 'rejected')
                                 <span class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold bg-red-100 text-red-800">
                                     <i class="fas fa-times-circle mr-2"></i> Rechazada
                                 </span>
-                                <p class="text-xs text-gray-500 mt-1">El SuperAdmin rechazó tu solicitud</p>
+                                <p class="text-xs text-gray-500 mt-1">El Admin rechazó tu solicitud</p>
                                 @else
                                 <span class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold bg-amber-100 text-amber-800">
                                     <i class="fas fa-clock mr-2"></i> Pendiente
@@ -106,7 +106,7 @@
                             <td colspan="4" class="px-6 py-8 text-center text-gray-500">
                                 <i class="fas fa-inbox text-4xl text-gray-300 mb-3"></i>
                                 <p>Aún no has enviado solicitudes de registro.</p>
-                                <p class="text-sm mt-1">Si necesitas agregar consumos de días anteriores, envía una solicitud para que el SuperAdmin la apruebe.</p>
+                                <p class="text-sm mt-1">Si necesitas agregar consumos de días anteriores, envía una solicitud para que el Admin la apruebe.</p>
                                 <a href="{{ route('cefa.huellacarbono.leader.request_form') }}" class="inline-flex items-center mt-4 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition">
                                     <i class="fas fa-paper-plane mr-2"></i> Solicitar registro
                                 </a>

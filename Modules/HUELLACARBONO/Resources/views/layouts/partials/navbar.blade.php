@@ -15,32 +15,8 @@
             <!-- Navigation Links - Desktop -->
             <div class="hidden md:flex items-center gap-1 flex-1 justify-center">
                 @auth
-                    @if(checkRol('huellacarbono.superadmin'))
-                        <!-- Enlaces para SuperAdmin (agrupados con más espacio) -->
-                        <a href="{{ route('cefa.huellacarbono.superadmin.dashboard') }}" class="text-gray-700 hover:text-green-600 px-4 py-2.5 rounded-lg hover:bg-gray-100 transition text-sm font-medium whitespace-nowrap">
-                            <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
-                        </a>
-                        <a href="{{ route('cefa.huellacarbono.superadmin.units.index') }}" class="text-gray-700 hover:text-green-600 px-4 py-2.5 rounded-lg hover:bg-gray-100 transition text-sm font-medium whitespace-nowrap">
-                            <i class="fas fa-industry mr-2"></i>Unidades
-                        </a>
-                        <a href="{{ route('cefa.huellacarbono.superadmin.factors.index') }}" class="text-gray-700 hover:text-green-600 px-4 py-2.5 rounded-lg hover:bg-gray-100 transition text-sm font-medium whitespace-nowrap">
-                            <i class="fas fa-flask mr-2"></i>Factores
-                        </a>
-                        <a href="{{ route('cefa.huellacarbono.superadmin.users.index') }}" class="text-gray-700 hover:text-green-600 px-4 py-2.5 rounded-lg hover:bg-gray-100 transition text-sm font-medium whitespace-nowrap">
-                            <i class="fas fa-users mr-2"></i>Usuarios
-                        </a>
-                        <span class="w-px h-6 bg-gray-200 mx-1" aria-hidden="true"></span>
-                        <a href="{{ route('cefa.huellacarbono.superadmin.consumptions.index') }}" class="text-gray-700 hover:text-green-600 px-4 py-2.5 rounded-lg hover:bg-gray-100 transition text-sm font-medium whitespace-nowrap">
-                            <i class="fas fa-clipboard-list mr-2"></i>Consumos
-                        </a>
-                        <a href="{{ route('cefa.huellacarbono.superadmin.requests.index') }}" class="text-gray-700 hover:text-green-600 px-4 py-2.5 rounded-lg hover:bg-gray-100 transition text-sm font-medium whitespace-nowrap">
-                            <i class="fas fa-paper-plane mr-2"></i>Solicitudes
-                        </a>
-                    @elseif(checkRol('huellacarbono.leader'))
-                        <!-- Enlaces para Líder (antes que Admin: si tiene ambos roles, ve panel Líder) -->
-                        <a href="{{ route('cefa.huellacarbono.leader.dashboard') }}" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-gray-100 transition">
-                            <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
-                        </a>
+                    @if(checkRol('huellacarbono.leader'))
+                        <!-- Enlaces para Líder (prioridad: si tiene Líder no se muestra Admin) -->
                         <a href="{{ route('cefa.huellacarbono.leader.register') }}" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-gray-100 transition">
                             <i class="fas fa-plus-circle mr-2"></i>Registrar
                         </a>
@@ -62,18 +38,22 @@
                             <i class="fas fa-chart-line mr-2"></i>Estadísticas
                         </a>
                     @elseif(checkRol('huellacarbono.admin'))
-                        <!-- Enlaces para Admin -->
-                        <a href="{{ route('cefa.huellacarbono.admin.dashboard') }}" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-gray-100 transition">
-                            <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                        <!-- Enlaces para Admin (solo si no tiene rol Líder) -->
+                        <a href="{{ route('cefa.huellacarbono.admin.units.index') }}" class="text-gray-700 hover:text-green-600 px-4 py-2.5 rounded-lg hover:bg-gray-100 transition text-sm font-medium whitespace-nowrap">
+                            <i class="fas fa-industry mr-2"></i>Unidades
                         </a>
-                        <a href="{{ route('cefa.huellacarbono.admin.consumptions.index') }}" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-gray-100 transition">
+                        <a href="{{ route('cefa.huellacarbono.admin.factors.index') }}" class="text-gray-700 hover:text-green-600 px-4 py-2.5 rounded-lg hover:bg-gray-100 transition text-sm font-medium whitespace-nowrap">
+                            <i class="fas fa-flask mr-2"></i>Factores
+                        </a>
+                        <a href="{{ route('cefa.huellacarbono.admin.users.index') }}" class="text-gray-700 hover:text-green-600 px-4 py-2.5 rounded-lg hover:bg-gray-100 transition text-sm font-medium whitespace-nowrap">
+                            <i class="fas fa-users mr-2"></i>Usuarios
+                        </a>
+                        <span class="w-px h-6 bg-gray-200 mx-1" aria-hidden="true"></span>
+                        <a href="{{ route('cefa.huellacarbono.admin.consumptions.index') }}" class="text-gray-700 hover:text-green-600 px-4 py-2.5 rounded-lg hover:bg-gray-100 transition text-sm font-medium whitespace-nowrap">
                             <i class="fas fa-clipboard-list mr-2"></i>Consumos
                         </a>
-                        <a href="{{ route('cefa.huellacarbono.admin.reports.index') }}" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-gray-100 transition">
-                            <i class="fas fa-file-pdf mr-2"></i>Reportes
-                        </a>
-                        <a href="{{ route('cefa.huellacarbono.admin.charts.index') }}" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-gray-100 transition">
-                            <i class="fas fa-chart-bar mr-2"></i>Gráficas
+                        <a href="{{ route('cefa.huellacarbono.admin.requests.index') }}" class="text-gray-700 hover:text-green-600 px-4 py-2.5 rounded-lg hover:bg-gray-100 transition text-sm font-medium whitespace-nowrap">
+                            <i class="fas fa-paper-plane mr-2"></i>Solicitudes
                         </a>
                     @else
                         <!-- Enlaces públicos (usuario autenticado sin rol de HC) -->
@@ -126,20 +106,13 @@
                          x-transition:enter-start="opacity-0 transform scale-95"
                          x-transition:enter-end="opacity-100 transform scale-100"
                          class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50">
-                        @if(checkRol('huellacarbono.superadmin'))
-                        <a href="{{ route('cefa.huellacarbono.superadmin.dashboard') }}" class="block px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-600">
-                            <i class="fas fa-user-shield mr-2"></i>Panel SuperAdmin
-                        </a>
-                        <a href="{{ route('cefa.huellacarbono.superadmin.requests.index') }}" class="block px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-600">
-                            <i class="fas fa-paper-plane mr-2"></i>Solicitudes de registro
-                        </a>
-                        @elseif(checkRol('huellacarbono.leader'))
+                        @if(checkRol('huellacarbono.leader'))
                         <a href="{{ route('cefa.huellacarbono.leader.dashboard') }}" class="block px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-600">
                             <i class="fas fa-user-cog mr-2"></i>Panel Líder
                         </a>
                         @elseif(checkRol('huellacarbono.admin'))
                         <a href="{{ route('cefa.huellacarbono.admin.dashboard') }}" class="block px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-600">
-                            <i class="fas fa-user-tie mr-2"></i>Panel Admin
+                            <i class="fas fa-user-shield mr-2"></i>Panel Admin
                         </a>
                         @endif
                         <hr class="my-2">
@@ -176,29 +149,7 @@
          class="md:hidden bg-white border-t">
         <div class="px-4 py-3 space-y-2">
             @auth
-                @if(checkRol('huellacarbono.superadmin'))
-                    <a href="{{ route('cefa.huellacarbono.superadmin.dashboard') }}" class="block text-gray-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-gray-100">
-                        <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
-                    </a>
-                    <a href="{{ route('cefa.huellacarbono.superadmin.units.index') }}" class="block text-gray-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-gray-100">
-                        <i class="fas fa-industry mr-2"></i>Unidades
-                    </a>
-                    <a href="{{ route('cefa.huellacarbono.superadmin.factors.index') }}" class="block text-gray-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-gray-100">
-                        <i class="fas fa-flask mr-2"></i>Factores
-                    </a>
-                    <a href="{{ route('cefa.huellacarbono.superadmin.users.index') }}" class="block text-gray-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-gray-100">
-                        <i class="fas fa-users mr-2"></i>Usuarios
-                    </a>
-                    <a href="{{ route('cefa.huellacarbono.superadmin.consumptions.index') }}" class="block text-gray-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-gray-100">
-                        <i class="fas fa-clipboard-list mr-2"></i>Consumos
-                    </a>
-                    <a href="{{ route('cefa.huellacarbono.superadmin.requests.index') }}" class="block text-gray-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-gray-100">
-                        <i class="fas fa-paper-plane mr-2"></i>Solicitudes
-                    </a>
-                @elseif(checkRol('huellacarbono.leader'))
-                    <a href="{{ route('cefa.huellacarbono.leader.dashboard') }}" class="block text-gray-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-gray-100">
-                        <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
-                    </a>
+                @if(checkRol('huellacarbono.leader'))
                     <a href="{{ route('cefa.huellacarbono.leader.register') }}" class="block text-gray-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-gray-100">
                         <i class="fas fa-plus-circle mr-2"></i>Registrar
                     </a>
@@ -220,17 +171,20 @@
                         <i class="fas fa-chart-line mr-2"></i>Estadísticas
                     </a>
                 @elseif(checkRol('huellacarbono.admin'))
-                    <a href="{{ route('cefa.huellacarbono.admin.dashboard') }}" class="block text-gray-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-gray-100">
-                        <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                    <a href="{{ route('cefa.huellacarbono.admin.units.index') }}" class="block text-gray-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-industry mr-2"></i>Unidades
+                    </a>
+                    <a href="{{ route('cefa.huellacarbono.admin.factors.index') }}" class="block text-gray-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-flask mr-2"></i>Factores
+                    </a>
+                    <a href="{{ route('cefa.huellacarbono.admin.users.index') }}" class="block text-gray-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-users mr-2"></i>Usuarios
                     </a>
                     <a href="{{ route('cefa.huellacarbono.admin.consumptions.index') }}" class="block text-gray-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-gray-100">
                         <i class="fas fa-clipboard-list mr-2"></i>Consumos
                     </a>
-                    <a href="{{ route('cefa.huellacarbono.admin.reports.index') }}" class="block text-gray-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-gray-100">
-                        <i class="fas fa-file-pdf mr-2"></i>Reportes
-                    </a>
-                    <a href="{{ route('cefa.huellacarbono.admin.charts.index') }}" class="block text-gray-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-gray-100">
-                        <i class="fas fa-chart-bar mr-2"></i>Gráficas
+                    <a href="{{ route('cefa.huellacarbono.admin.requests.index') }}" class="block text-gray-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-paper-plane mr-2"></i>Solicitudes
                     </a>
                 @else
                     <!-- Usuario autenticado sin rol HC -->
