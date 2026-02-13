@@ -1,13 +1,17 @@
 @extends('huellacarbono::layouts.master')
 
 @section('content')
-<!-- Encabezado -->
-<div class="bg-gradient-to-r from-green-600 to-emerald-700 text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="text-center">
-            <i class="fas fa-code text-5xl mb-4 opacity-90"></i>
-            <h1 class="text-3xl md:text-4xl font-bold mb-2">Desarrolladores y Herramientas</h1>
-            <p class="text-lg opacity-90">Equipo y tecnologías del proyecto Huella de Carbono</p>
+<!-- Banner título (igual que página principal: imagen de fondo + overlay) -->
+<div class="relative overflow-hidden h-[320px] min-h-[320px]">
+    <div class="absolute inset-0 z-0">
+        <img src="https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="" class="w-full h-full object-cover" loading="lazy">
+        <div class="absolute inset-0 bg-gradient-to-r from-green-900/80 to-emerald-900/80"></div>
+    </div>
+    <div class="absolute inset-0 z-10 flex items-center justify-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 left-0 right-0">
+        <div class="text-center text-white">
+            <i class="fas fa-code text-7xl mb-6 drop-shadow-lg"></i>
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 drop-shadow-lg">Desarrolladores y Herramientas</h1>
+            <p class="text-xl opacity-90 drop-shadow-md">Equipo y tecnologías del proyecto Huella de Carbono</p>
         </div>
     </div>
 </div>
@@ -56,11 +60,11 @@
                 <p class="text-gray-600 mb-8">Lenguajes y tecnologías utilizados en el desarrollo de este proyecto.</p>
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                     <div class="flex flex-col items-center p-4 rounded-xl bg-gray-50 hover:bg-green-50 border border-gray-100 hover:border-green-200 transition">
-                        <i class="fab fa-laravel text-4xl text-red-500 mb-2"></i>
+                        <i class="fab fa-laravel text-4xl text-amber-600 mb-2"></i>
                         <span class="text-sm font-semibold text-gray-800">Laravel</span>
                     </div>
                     <div class="flex flex-col items-center p-4 rounded-xl bg-gray-50 hover:bg-green-50 border border-gray-100 hover:border-green-200 transition">
-                        <i class="fab fa-php text-4xl text-indigo-600 mb-2"></i>
+                        <i class="fab fa-php text-4xl text-teal-600 mb-2"></i>
                         <span class="text-sm font-semibold text-gray-800">PHP</span>
                     </div>
                     <div class="flex flex-col items-center p-4 rounded-xl bg-gray-50 hover:bg-green-50 border border-gray-100 hover:border-green-200 transition">
@@ -76,7 +80,7 @@
                         <span class="text-sm font-semibold text-gray-800">Font Awesome</span>
                     </div>
                     <div class="flex flex-col items-center p-4 rounded-xl bg-gray-50 hover:bg-green-50 border border-gray-100 hover:border-green-200 transition">
-                        <i class="fab fa-bootstrap text-4xl text-purple-600 mb-2"></i>
+                        <i class="fab fa-bootstrap text-4xl text-emerald-600 mb-2"></i>
                         <span class="text-sm font-semibold text-gray-800">Bootstrap</span>
                     </div>
                     <div class="flex flex-col items-center p-4 rounded-xl bg-gray-50 hover:bg-green-50 border border-gray-100 hover:border-green-200 transition">

@@ -57,14 +57,14 @@
         <!-- Accesos Rápidos -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <a href="{{ route('cefa.huellacarbono.leader.register') }}" 
-               class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl shadow-lg p-8 text-white hover:shadow-xl transition transform hover:-translate-y-1">
+               class="bg-gradient-to-br from-teal-500 to-cyan-600 rounded-2xl shadow-lg p-8 text-white hover:shadow-xl transition transform hover:-translate-y-1">
                 <i class="fas fa-plus-circle text-5xl mb-4"></i>
                 <h3 class="text-2xl font-bold mb-2">Registrar Consumo Diario</h3>
                 <p class="opacity-90">Ingresa los datos de consumo de hoy</p>
             </a>
 
             <a href="{{ route('cefa.huellacarbono.leader.history') }}" 
-               class="bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl shadow-lg p-8 text-white hover:shadow-xl transition transform hover:-translate-y-1">
+               class="bg-gradient-to-br from-emerald-500 to-green-600 rounded-2xl shadow-lg p-8 text-white hover:shadow-xl transition transform hover:-translate-y-1">
                 <i class="fas fa-history text-5xl mb-4"></i>
                 <h3 class="text-2xl font-bold mb-2">Ver Historial</h3>
                 <p class="opacity-90">Consulta registros anteriores</p>

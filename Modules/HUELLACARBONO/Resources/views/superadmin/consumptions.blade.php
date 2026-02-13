@@ -116,7 +116,7 @@
                                         <i class="fas fa-edit text-lg"></i>
                                     </button>
                                     <button onclick="deleteConsumption({{ $consumption->id }})" 
-                                            class="text-red-600 hover:text-red-800 transition"
+                                            class="text-slate-600 hover:text-slate-800 transition"
                                             title="Eliminar">
                                         <i class="fas fa-trash text-lg"></i>
                                     </button>

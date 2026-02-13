@@ -6,14 +6,14 @@
         <!-- Header -->
         <div class="mb-8">
             <h1 class="text-4xl font-bold text-gray-900 mb-2">
-                <i class="fas fa-paper-plane text-amber-600"></i> Solicitudes de Registro
+                <i class="fas fa-paper-plane text-teal-600"></i> Solicitudes de Registro
             </h1>
             <p class="text-gray-600">Líderes solicitan agregar consumos en fechas pasadas. Aprueba o rechaza cada solicitud.</p>
         </div>
 
         <!-- Tabla de solicitudes -->
         <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
-            <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
+            <div class="bg-gradient-to-r from-teal-600 to-emerald-600 px-6 py-4">
                 <h3 class="text-xl font-bold text-white">
                     <i class="fas fa-list mr-2"></i> Todas las solicitudes
                 </h3>
@@ -62,7 +62,7 @@
                                     Aprobada
                                 </span>
                                 @else
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-800">
                                     Rechazada
                                 </span>
                                 @endif
@@ -74,7 +74,7 @@
                                     <i class="fas fa-check-circle text-lg"></i>
                                 </button>
                                 <button type="button" onclick="rejectRequest({{ $req->id }})" 
-                                        class="text-red-600 hover:text-red-800 font-medium" title="Rechazar">
+                                        class="text-slate-600 hover:text-slate-800 font-medium" title="Rechazar">
                                     <i class="fas fa-times-circle text-lg"></i>
                                 </button>
                                 @else
@@ -118,7 +118,7 @@
                     <span id="confirmModalTitle">Confirmar aprobación</span>
                 </h3>
             </div>
-            <div id="confirmModalRejectHeader" class="hidden bg-gradient-to-r from-red-600 to-rose-600 px-6 py-4">
+            <div id="confirmModalRejectHeader" class="hidden bg-gradient-to-r from-slate-600 to-slate-700 px-6 py-4">
                 <h3 class="text-lg font-bold text-white flex items-center">
                     <i class="fas fa-times-circle mr-2"></i>
                     <span>Confirmar rechazo</span>
@@ -169,7 +169,7 @@ function openConfirmCard(action, id) {
         confirmModalApproveHeader.classList.add('hidden');
         confirmModalRejectHeader.classList.remove('hidden');
         confirmModalMessage.textContent = '¿Rechazar esta solicitud? No se crearán consumos.';
-        confirmModalOk.className = 'px-4 py-2 rounded-xl font-medium text-white bg-red-600 hover:bg-red-700 transition flex items-center';
+        confirmModalOk.className = 'px-4 py-2 rounded-xl font-medium text-white bg-slate-600 hover:bg-slate-700 transition flex items-center';
         confirmModalOk.innerHTML = '<i class="fas fa-times mr-2"></i> Rechazar';
     }
     confirmModal.classList.remove('hidden');

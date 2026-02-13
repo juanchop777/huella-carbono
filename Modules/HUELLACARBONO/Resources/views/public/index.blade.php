@@ -64,7 +64,7 @@
                 
                 <div class="grid grid-cols-2 gap-4">
                     <div class="bg-blue-50 p-4 rounded-xl">
-                        <i class="fas fa-industry text-3xl text-blue-600 mb-2"></i>
+                        <i class="fas fa-industry text-3xl text-teal-600 mb-2"></i>
                         <h4 class="font-semibold text-gray-900">Actividades</h4>
                         <p class="text-sm text-gray-600">Industriales y domésticas</p>
                     </div>
@@ -80,7 +80,7 @@
 </div>
 
 <!-- ¿Cómo se Calcula? - Con Imagen -->
-<div class="bg-gradient-to-br from-blue-50 to-indigo-50 py-16">
+<div class="bg-gradient-to-br from-emerald-50 to-teal-50 py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
             <div class="grid grid-cols-1 lg:grid-cols-2">
@@ -106,8 +106,8 @@
                     
                     <div class="space-y-4 mb-6">
                         <div class="flex items-start">
-                            <div class="bg-purple-100 w-10 h-10 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
-                                <i class="fas fa-bolt text-purple-600"></i>
+                            <div class="bg-teal-100 w-10 h-10 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fas fa-bolt text-teal-600"></i>
                             </div>
                             <div>
                                 <h4 class="font-semibold text-gray-900">Actividad</h4>
@@ -115,8 +115,8 @@
                             </div>
                         </div>
                         <div class="flex items-start">
-                            <div class="bg-orange-100 w-10 h-10 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
-                                <i class="fas fa-flask text-orange-600"></i>
+                            <div class="bg-amber-100 w-10 h-10 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fas fa-flask text-amber-600"></i>
                             </div>
                             <div>
                                 <h4 class="font-semibold text-gray-900">Factor de Emisión</h4>
@@ -150,6 +150,49 @@
     </div>
 </div>
 
+@if(!empty($mapboxToken))
+<!-- Mapa de calor - Centro de Formación La Angostura -->
+<section class="bg-gradient-to-br from-slate-50 to-teal-50 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                <i class="fas fa-map-marked-alt text-teal-600 mr-2"></i>
+                Mapa de calor por CO₂
+            </h2>
+            <p class="text-lg text-gray-600">Centro de Formación Agroindustrial "La Angostura" — emisiones por zona</p>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+            <!-- Información sobre el mapa -->
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 lg:p-8 order-2 lg:order-1">
+                <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                    <i class="fas fa-info-circle text-teal-600 mr-2"></i>
+                    ¿De qué se trata este mapa?
+                </h3>
+                <p class="text-gray-700 mb-4 leading-relaxed">
+                    Este mapa de calor muestra la <strong>intensidad de emisiones de CO₂</strong> por zona dentro del Centro de Formación Agroindustrial "La Angostura", en Campoalegre, Huila.
+                </p>
+                <p class="text-gray-600 mb-4 leading-relaxed text-sm">
+                    Cada punto representa un área o instalación (complejo agroindustrial, ganadería, PTAR, invernadero, vivero, etc.). El color indica el nivel de huella de carbono: <span class="text-blue-600 font-medium">azul/verde</span> bajo, <span class="text-yellow-600 font-medium">amarillo</span> alto y <span class="text-red-600 font-medium">rojo</span> muy alto.
+                </p>
+                <p class="text-gray-500 text-sm leading-relaxed">
+                    Los datos son de referencia para visualizar dónde se concentra el impacto. Puedes hacer clic en los puntos del mapa para ver el nombre de la zona y el valor asociado.
+                </p>
+            </div>
+            <!-- Mapa (card más pequeña) -->
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 order-1 lg:order-2">
+                <div id="heatmap-map" class="w-full" style="height: 360px;"></div>
+                <div class="px-4 py-2.5 bg-gray-50 border-t border-gray-200 flex flex-wrap items-center justify-center gap-3 text-xs text-gray-600">
+                    <span class="flex items-center"><span class="inline-block w-3 h-3 rounded-full bg-blue-400 mr-1"></span> Bajo</span>
+                    <span class="flex items-center"><span class="inline-block w-3 h-3 rounded-full bg-green-400 mr-1"></span> Medio</span>
+                    <span class="flex items-center"><span class="inline-block w-3 h-3 rounded-full bg-yellow-400 mr-1"></span> Alto</span>
+                    <span class="flex items-center"><span class="inline-block w-3 h-3 rounded-full bg-red-500 mr-1"></span> Muy alto</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@endif
+
 <!-- ¿Por qué es Importante? - Con Imagen de Fondo -->
 <div class="relative py-20 overflow-hidden">
     <!-- Imagen de fondo con overlay -->
@@ -165,7 +208,7 @@
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
             <h2 class="text-4xl font-bold text-white mb-4">
-                <i class="fas fa-heart text-red-400 mr-3"></i>
+                <i class="fas fa-heart text-emerald-500 mr-3"></i>
                 ¿Por qué es Importante Medirla?
             </h2>
             <p class="text-xl text-white/90">
@@ -175,8 +218,8 @@
         
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div class="bg-white/95 backdrop-blur-sm rounded-2xl p-6 text-center transform hover:scale-105 transition">
-                <div class="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-temperature-high text-3xl text-red-600"></i>
+                <div class="bg-amber-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-temperature-high text-3xl text-teal-600"></i>
                 </div>
                 <h4 class="font-bold text-gray-900 mb-2">Cambio Climático</h4>
                 <p class="text-sm text-gray-600">Reduce el calentamiento global</p>
@@ -199,8 +242,8 @@
             </div>
             
             <div class="bg-white/95 backdrop-blur-sm rounded-2xl p-6 text-center transform hover:scale-105 transition">
-                <div class="bg-pink-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-heartbeat text-3xl text-pink-600"></i>
+                <div class="bg-teal-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-heartbeat text-3xl text-teal-600"></i>
                 </div>
                 <h4 class="font-bold text-gray-900 mb-2">Salud</h4>
                 <p class="text-sm text-gray-600">Mejora el aire que respiramos</p>
@@ -222,7 +265,7 @@
     
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <!-- Calculadora Personal -->
-        <div class="bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden group">
+        <div class="bg-gradient-to-br from-teal-500 to-emerald-600 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden group">
             <div class="p-8 text-white">
                 <div class="bg-white/20 w-20 h-20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
                     <i class="fas fa-calculator text-4xl"></i>
@@ -256,7 +299,7 @@
         </div>
         
         <!-- Más Información -->
-        <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden group">
+        <div class="bg-gradient-to-br from-teal-500 to-cyan-600 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden group">
             <div class="p-8 text-white">
                 <div class="bg-white/20 w-20 h-20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
                     <i class="fas fa-book-open text-4xl"></i>
@@ -278,7 +321,7 @@
 <!-- Acceso para Usuarios Autenticados -->
 <div class="bg-gray-100 py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-3xl shadow-2xl p-8 text-white">
+        <div class="bg-gradient-to-r from-teal-600 to-emerald-600 rounded-3xl shadow-2xl p-8 text-white">
             <h3 class="text-3xl font-bold mb-8 text-center">
                 <i class="fas fa-user-check mr-2"></i> Acceso para Usuarios Registrados
             </h3>
@@ -296,7 +339,7 @@
                 @if(checkRol('huellacarbono.admin') && !checkRol('huellacarbono.leader'))
                 <a href="{{ route('cefa.huellacarbono.admin.dashboard') }}" 
                    class="bg-white hover:bg-gray-50 text-gray-900 rounded-2xl p-6 text-center transform hover:scale-105 transition-all shadow-lg">
-                    <i class="fas fa-user-shield text-5xl text-red-600 mb-4"></i>
+                    <i class="fas fa-user-shield text-5xl text-teal-600 mb-4"></i>
                     <h4 class="text-xl font-bold">Panel Admin</h4>
                     <p class="text-sm text-gray-600 mt-2">Gestión completa del sistema</p>
                 </a>
@@ -428,8 +471,8 @@
 
             <!-- Consumo -->
             <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition transform hover:-translate-y-1">
-                <div class="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-shopping-bag text-3xl text-orange-600"></i>
+                <div class="bg-amber-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-shopping-bag text-3xl text-amber-600"></i>
                 </div>
                 <h3 class="text-xl font-bold text-gray-900 mb-3 text-center"> Consume Responsable</h3>
                 <ul class="space-y-2 text-gray-700 text-sm">
@@ -497,4 +540,54 @@
         </div>
     </div>
 </section>
+
+@if(!empty($mapboxToken))
+@section('stylesheet')
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css" rel="stylesheet">
+@endsection
+
+@section('script')
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js"></script>
+<script>
+(function() {
+    var mapboxToken = @json($mapboxToken ?? '');
+    var heatmapZones = @json($heatmapZones ?? []);
+    if (!mapboxToken || !document.getElementById('heatmap-map') || !heatmapZones.length) return;
+    mapboxgl.accessToken = mapboxToken;
+    var center = heatmapZones[0] ? [heatmapZones[0].lng, heatmapZones[0].lat] : [-75.361439, 2.612606];
+    var map = new mapboxgl.Map({
+        container: 'heatmap-map',
+        style: 'mapbox://styles/mapbox/light-v11',
+        center: center,
+        zoom: 17
+    });
+    var points = heatmapZones.map(function(z) {
+        return { type: 'Feature', geometry: { type: 'Point', coordinates: [z.lng, z.lat] }, properties: { co2: Math.min(z.co2 || 0, 500) } };
+    });
+    var geojson = { type: 'FeatureCollection', features: points };
+    map.on('load', function() {
+        map.addSource('heatmap-zones', { type: 'geojson', data: geojson });
+        map.addLayer({
+            id: 'heatmap-layer',
+            type: 'heatmap',
+            source: 'heatmap-zones',
+            maxzoom: 18,
+            paint: {
+                'heatmap-weight': ['interpolate', ['linear'], ['get', 'co2'], 0, 0.2, 200, 0.6, 400, 1],
+                'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 0, 0.8, 18, 1.2],
+                'heatmap-color': ['interpolate', ['linear'], ['heatmap-density'], 0, 'rgba(59, 130, 246, 0)', 0.3, 'rgba(34, 197, 94, 0.5)', 0.6, 'rgba(234, 179, 8, 0.6)', 1, 'rgba(239, 68, 68, 0.8)'],
+                'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 0, 25, 18, 80]
+            }
+        });
+        heatmapZones.forEach(function(z) {
+            var el = document.createElement('div');
+            el.className = 'cursor-pointer w-3 h-3 rounded-full bg-teal-600 border-2 border-white shadow';
+            el.title = (z.name || '') + ' — ' + (z.co2 || 0) + ' kg CO₂';
+            new mapboxgl.Marker({ element: el }).setLngLat([z.lng, z.lat]).setPopup(new mapboxgl.Popup({ offset: 12 }).setHTML('<strong>' + (z.name || '') + '</strong><br><span class="text-teal-600">' + (z.co2 || 0) + ' kg CO₂</span>')).addTo(map);
+        });
+    });
+})();
+</script>
+@endsection
+@endif
 @endsection

@@ -22,7 +22,7 @@
                 <p class="text-sm opacity-90">kg CO₂ esta semana</p>
             </div>
 
-            <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl shadow-lg p-6 text-white">
+            <div class="bg-gradient-to-br from-teal-500 to-cyan-600 rounded-2xl shadow-lg p-6 text-white">
                 <div class="flex items-center justify-between mb-4">
                     <i class="fas fa-calendar-alt text-4xl opacity-80"></i>
                     <span class="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">Mensual</span>
@@ -31,7 +31,7 @@
                 <p class="text-sm opacity-90">kg CO₂ este mes</p>
             </div>
 
-            <div class="bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl shadow-lg p-6 text-white">
+            <div class="bg-gradient-to-br from-emerald-500 to-green-600 rounded-2xl shadow-lg p-6 text-white">
                 <div class="flex items-center justify-between mb-4">
                     <i class="fas fa-calendar text-4xl opacity-80"></i>
                     <span class="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">Anual</span>
@@ -58,8 +58,8 @@
                     <p class="text-2xl font-bold text-blue-700">{{ number_format($monthlyTotal / 22 * 12, 1) }}</p>
                     <p class="text-sm text-gray-600">árboles/año (proyección mensual)</p>
                 </div>
-                <div class="bg-purple-50 rounded-xl p-4 text-center">
-                    <p class="text-2xl font-bold text-purple-700">{{ number_format($yearlyTotal / 22, 1) }}</p>
+                <div class="bg-teal-50 rounded-xl p-4 text-center">
+                    <p class="text-2xl font-bold text-teal-700">{{ number_format($yearlyTotal / 22, 1) }}</p>
                     <p class="text-sm text-gray-600">árboles para compensar este año</p>
                 </div>
             </div>
@@ -69,8 +69,8 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <a href="{{ route('cefa.huellacarbono.leader.history') }}" 
                class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition flex items-center">
-                <div class="bg-purple-100 w-14 h-14 rounded-xl flex items-center justify-center mr-4">
-                    <i class="fas fa-history text-2xl text-purple-600"></i>
+                <div class="bg-teal-100 w-14 h-14 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-history text-2xl text-teal-600"></i>
                 </div>
                 <div>
                     <h3 class="text-lg font-bold text-gray-900">Ver Historial</h3>

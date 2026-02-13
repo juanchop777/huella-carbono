@@ -35,7 +35,7 @@
                 <!-- Cantidad (editable) -->
                 <div class="mb-6">
                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                        Cantidad <span class="text-red-500">*</span>
+                        Cantidad <span class="text-slate-500">*</span>
                         <span class="text-green-600 font-semibold">({{ $consumption->emissionFactor->unit }})</span>
                     </label>
                     <input type="number" name="quantity" id="quantity" 
@@ -48,7 +48,7 @@
                 @if($consumption->emissionFactor->requires_percentage)
                 <div class="mb-6">
                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                        Porcentaje de Nitrógeno (%) <span class="text-red-500">*</span>
+                        Porcentaje de Nitrógeno (%) <span class="text-slate-500">*</span>
                     </label>
                     <input type="number" name="nitrogen_percentage" id="nitrogen_percentage" 
                            value="{{ $consumption->nitrogen_percentage }}"

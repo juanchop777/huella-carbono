@@ -1,17 +1,17 @@
 @extends('huellacarbono::layouts.master')
 
 @section('content')
-<!-- Hero Section -->
-<div class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div class="text-center">
-            <i class="fas fa-info-circle text-7xl mb-4"></i>
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">
-                ¿Qué es la Huella de Carbono?
-            </h1>
-            <p class="text-xl opacity-90">
-                Información sobre medición y cálculo de emisiones
-            </p>
+<!-- Banner título (igual que página principal: imagen de fondo + overlay) -->
+<div class="relative overflow-hidden h-[320px] min-h-[320px]">
+    <div class="absolute inset-0 z-0">
+        <img src="https://images.pexels.com/photos/1072179/pexels-photo-1072179.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="" class="w-full h-full object-cover" loading="lazy">
+        <div class="absolute inset-0 bg-gradient-to-r from-green-900/80 to-emerald-900/80"></div>
+    </div>
+    <div class="absolute inset-0 z-10 flex items-center justify-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 left-0 right-0">
+        <div class="text-center text-white">
+            <i class="fas fa-info-circle text-7xl mb-6 drop-shadow-lg"></i>
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 drop-shadow-lg">¿Qué es la Huella de Carbono?</h1>
+            <p class="text-xl opacity-90 drop-shadow-md">Información sobre medición y cálculo de emisiones</p>
         </div>
     </div>
 </div>
@@ -68,7 +68,7 @@
                         </div>
                         <div class="bg-gray-50 p-4 rounded-lg">
                             <h6 class="font-semibold text-gray-900 mb-2">
-                                <i class="fas fa-flask text-purple-600 mr-2"></i>Factor de Emisión
+                                <i class="fas fa-flask text-teal-600 mr-2"></i>Factor de Emisión
                             </h6>
                             <p class="text-sm text-gray-600">
                                 Coeficiente que convierte la actividad en kg de CO₂

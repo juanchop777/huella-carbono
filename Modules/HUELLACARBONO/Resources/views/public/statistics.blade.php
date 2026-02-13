@@ -1,20 +1,18 @@
 @extends('huellacarbono::layouts.master')
 
 @section('content')
-<!-- Hero Section -->
-<div class="bg-gradient-to-r from-green-600 to-emerald-700 text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div class="text-center">
-            <i class="fas fa-chart-line text-7xl mb-4"></i>
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">
-                Estadísticas del Centro de Formación
-            </h1>
-            <p class="text-xl opacity-90 mb-2">
-                Huella de Carbono Generada
-            </p>
-            <p class="text-lg opacity-75">
-                {{ $startDate->format('d/m/Y') }} - {{ $endDate->format('d/m/Y') }}
-            </p>
+<!-- Banner título (igual que página principal: imagen de fondo + overlay) -->
+<div class="relative overflow-hidden h-[320px] min-h-[320px]">
+    <div class="absolute inset-0 z-0">
+        <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1600" alt="" class="w-full h-full object-cover" loading="lazy">
+        <div class="absolute inset-0 bg-gradient-to-r from-green-900/80 to-emerald-900/80"></div>
+    </div>
+    <div class="absolute inset-0 z-10 flex items-center justify-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 left-0 right-0">
+        <div class="text-center text-white">
+            <i class="fas fa-chart-line text-7xl mb-6 drop-shadow-lg"></i>
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 drop-shadow-lg">Estadísticas del Centro de Formación</h1>
+            <p class="text-xl opacity-90 mb-2 drop-shadow-md">Huella de Carbono Generada</p>
+            <p class="text-lg opacity-75 drop-shadow-md">{{ $startDate->format('d/m/Y') }} - {{ $endDate->format('d/m/Y') }}</p>
         </div>
     </div>
 </div>
@@ -58,7 +56,7 @@
         <!-- CO2 por Unidad Productiva -->
         <div class="bg-white rounded-2xl shadow-xl p-6">
             <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                <i class="fas fa-industry text-blue-600 mr-3"></i>
+                <i class="fas fa-industry text-teal-600 mr-3"></i>
                 CO₂ por Unidad Productiva
             </h3>
             <div class="relative" style="height: 400px;">
@@ -69,7 +67,7 @@
         <!-- CO2 por Tipo de Consumo -->
         <div class="bg-white rounded-2xl shadow-xl p-6">
             <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                <i class="fas fa-list text-orange-600 mr-3"></i>
+                <i class="fas fa-list text-amber-600 mr-3"></i>
                 CO₂ por Tipo de Consumo
             </h3>
             <div class="relative" style="height: 400px;">
@@ -80,7 +78,7 @@
 
     <!-- Tabla Detallada -->
     <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
-        <div class="bg-gradient-to-r from-blue-600 to-indigo-700 px-6 py-4">
+        <div class="bg-gradient-to-r from-teal-600 to-emerald-700 px-6 py-4">
             <h3 class="text-2xl font-bold text-white flex items-center">
                 <i class="fas fa-table mr-3"></i>
                 Detalle por Unidad Productiva
@@ -109,7 +107,7 @@
                     <tr class="hover:bg-gray-50 transition">
                         <td class="px-6 py-4">
                             <div class="flex items-center">
-                                <i class="fas fa-industry text-blue-600 mr-3"></i>
+                                <i class="fas fa-industry text-teal-600 mr-3"></i>
                                 <span class="text-sm font-medium text-gray-900">
                                     {{ $item->productiveUnit->name ?? 'N/A' }}
                                 </span>
@@ -135,7 +133,7 @@
                         </td>
                         <td class="px-6 py-4 text-center">
                             @if($percentage >= 20)
-                                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800">
+                                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">
                                     Alto
                                 </span>
                             @elseif($percentage >= 10)
@@ -199,64 +197,59 @@ const colors = [
     'rgba(34, 197, 94, 0.8)',    // emerald
 ];
 
-// Gráfica por Unidad Productiva
+// Gráfica por Unidad Productiva (dispersión)
+@php
+    $labelsUnit = $co2ByUnit->map(function ($item) { return $item->productiveUnit->name ?? 'N/A'; })->values()->all();
+    $dataUnit = $co2ByUnit->map(function ($item) { return (float) $item->total_co2; })->values()->all();
+@endphp
+const labelsUnit = @json($labelsUnit);
+const dataUnit = @json($dataUnit);
+const scatterUnit = labelsUnit.map(function(label, i) { return { x: i, y: dataUnit[i] }; });
 const ctxUnit = document.getElementById('chartByUnit').getContext('2d');
 new Chart(ctxUnit, {
-    type: 'bar',
+    type: 'scatter',
     data: {
-        labels: [
-            @foreach($co2ByUnit as $item)
-            '{{ $item->productiveUnit->name ?? "N/A" }}',
-            @endforeach
-        ],
         datasets: [{
             label: 'CO₂ (kg)',
-            data: [
-                @foreach($co2ByUnit as $item)
-                {{ $item->total_co2 }},
-                @endforeach
-            ],
-            backgroundColor: colors,
-            borderColor: colors.map(c => c.replace('0.8', '1')),
-            borderWidth: 2,
-            borderRadius: 8,
+            data: scatterUnit,
+            backgroundColor: scatterUnit.map(function(_, i) { return colors[i % colors.length]; }),
+            borderColor: '#374151',
+            borderWidth: 1,
+            pointRadius: 10,
+            pointHoverRadius: 14
         }]
     },
     options: {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-            legend: {
-                display: false
-            },
+            legend: { display: false },
             tooltip: {
                 backgroundColor: 'rgba(0, 0, 0, 0.8)',
                 padding: 12,
-                titleFont: { size: 14, weight: 'bold' },
-                bodyFont: { size: 13 },
                 callbacks: {
                     label: function(context) {
-                        return context.parsed.y.toFixed(2) + ' kg CO₂';
+                        var idx = context.raw.x;
+                        return (labelsUnit[idx] || '') + ': ' + context.parsed.y.toFixed(2) + ' kg CO₂';
                     }
                 }
             }
         },
         scales: {
+            x: {
+                min: -0.5,
+                max: Math.max(0, labelsUnit.length - 1) + 0.5,
+                ticks: {
+                    stepSize: 1,
+                    callback: function(value) { return labelsUnit[value] != null ? labelsUnit[value] : value; }
+                },
+                title: { display: true, text: 'Unidad' }
+            },
             y: {
                 beginAtZero: true,
-                grid: {
-                    color: 'rgba(0, 0, 0, 0.05)'
-                },
-                ticks: {
-                    callback: function(value) {
-                        return value + ' kg';
-                    }
-                }
-            },
-            x: {
-                grid: {
-                    display: false
-                }
+                grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                ticks: { callback: function(value) { return value + ' kg'; } },
+                title: { display: true, text: 'kg CO₂' }
             }
         }
     }

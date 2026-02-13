@@ -33,7 +33,7 @@
                 <!-- Fecha -->
                 <div class="mb-6">
                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                        Fecha del Consumo <span class="text-red-500">*</span>
+                        Fecha del Consumo <span class="text-slate-500">*</span>
                     </label>
                     <input type="date" name="consumption_date" id="consumption_date"
                            min="{{ date('Y-m-d') }}"
@@ -121,14 +121,14 @@ function addVariableRow() {
     const html = `
         <div id="${rowId}" class="bg-gray-50 border border-gray-200 rounded-xl p-6 relative">
             <button type="button" onclick="removeVariableRow('${rowId}')" 
-                    class="absolute top-4 right-4 text-red-600 hover:text-red-800 transition">
+                    class="absolute top-4 right-4 text-slate-600 hover:text-slate-800 transition">
                 <i class="fas fa-times-circle text-2xl"></i>
             </button>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <!-- Variable -->
                 <div class="md:col-span-2">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Variable <span class="text-red-500">*</span></label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Variable <span class="text-slate-500">*</span></label>
                     <select class="variable-select w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" 
                             data-row-id="${rowId}" required>
                         <option value="">-- Seleccione --</option>
@@ -139,7 +139,7 @@ function addVariableRow() {
                 <!-- Cantidad -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                        Cantidad <span class="text-red-500">*</span>
+                        Cantidad <span class="text-slate-500">*</span>
                         <span class="unit-display text-green-600 font-semibold"></span>
                     </label>
                     <input type="number" class="quantity-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" 
@@ -150,7 +150,7 @@ function addVariableRow() {
             <!-- Porcentaje de Nitrógeno (condicional) -->
             <div class="nitrogen-container hidden mt-4">
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                    Porcentaje de Nitrógeno (%) <span class="text-red-500">*</span>
+                    Porcentaje de Nitrógeno (%) <span class="text-slate-500">*</span>
                 </label>
                 <input type="number" class="nitrogen-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" 
                        step="0.01" min="0" max="100" placeholder="Ej: 46">

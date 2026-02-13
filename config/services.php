@@ -36,4 +36,10 @@ return [
         'redirect' => '/google-callback',
     ],
 
+    'mapbox' => [
+        'token' => env('MAPBOX_TOKEN'),
+        'center_lat' => (float) env('MAPBOX_CENTER_LAT', 2.612606),
+        'center_lng' => (float) env('MAPBOX_CENTER_LNG', -75.361439),
+    ],
+
 ];

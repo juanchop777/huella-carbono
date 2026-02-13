@@ -6,7 +6,7 @@
         <!-- Header -->
         <div class="mb-8">
             <h1 class="text-4xl font-bold text-gray-900 mb-2">
-                <i class="fas fa-chart-bar text-purple-600"></i> Gráficas y Análisis
+                <i class="fas fa-chart-bar text-teal-600"></i> Gráficas y Análisis
             </h1>
             <p class="text-gray-600">Visualización avanzada de datos históricos</p>
         </div>
@@ -16,7 +16,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Vista</label>
-                    <select id="viewType" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                    <select id="viewType" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500">
                         <option value="weekly">📅 Semanal (últimas 12 semanas)</option>
                         <option value="monthly" selected>📆 Mensual (últimos 12 meses)</option>
                         <option value="quarterly">📊 Trimestral (últimos 8 trimestres)</option>
@@ -26,7 +26,7 @@
                 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Unidad Productiva</label>
-                    <select id="unitFilter" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                    <select id="unitFilter" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500">
                         <option value="all">Todas las unidades</option>
                         @foreach($units as $unit)
                         <option value="{{ $unit->id }}">{{ $unit->name }}</option>
@@ -35,7 +35,7 @@
                 </div>
                 
                 <div class="flex items-end">
-                    <button onclick="updateCharts()" class="w-full bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition">
+                    <button onclick="updateCharts()" class="w-full bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg font-semibold transition">
                         <i class="fas fa-sync-alt mr-2"></i>Actualizar
                     </button>
                 </div>
@@ -58,14 +58,14 @@
                 <p class="text-xs opacity-75">kg CO₂</p>
             </div>
             
-            <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl shadow-lg p-6 text-white">
+            <div class="bg-gradient-to-br from-teal-500 to-cyan-600 rounded-2xl shadow-lg p-6 text-white">
                 <i class="fas fa-calendar text-3xl opacity-80 mb-2"></i>
                 <p class="text-sm opacity-90">Este Trimestre</p>
                 <p class="text-3xl font-bold">{{ number_format($quarterlyTotal, 2) }}</p>
                 <p class="text-xs opacity-75">kg CO₂</p>
             </div>
             
-            <div class="bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl shadow-lg p-6 text-white">
+            <div class="bg-gradient-to-br from-emerald-500 to-green-600 rounded-2xl shadow-lg p-6 text-white">
                 <i class="fas fa-calendar-check text-3xl opacity-80 mb-2"></i>
                 <p class="text-sm opacity-90">Este Año</p>
                 <p class="text-3xl font-bold">{{ number_format($yearlyTotal, 2) }}</p>
@@ -100,7 +100,7 @@
             <!-- Por Factor de Emisión -->
             <div class="bg-white rounded-2xl shadow-xl p-6">
                 <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
-                    <i class="fas fa-leaf text-orange-600 mr-3"></i>
+                    <i class="fas fa-leaf text-amber-600 mr-3"></i>
                     Distribución por Tipo de Consumo
                 </h3>
                 <div class="relative" style="height: 400px;">
@@ -112,7 +112,7 @@
         <!-- Comparación Anual -->
         <div class="bg-white rounded-2xl shadow-xl p-6 mb-8">
             <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                <i class="fas fa-calendar-alt text-purple-600 mr-3"></i>
+                <i class="fas fa-calendar-alt text-teal-600 mr-3"></i>
                 Comparación Anual (2022-2024)
             </h3>
             <div class="relative" style="height: 350px;">

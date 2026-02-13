@@ -31,7 +31,7 @@
                         Para agregar consumos en esas fechas debes <strong>solicitar aprobación del Admin</strong>.
                     </p>
                     <a href="{{ route('cefa.huellacarbono.leader.request_form') }}" 
-                       class="inline-flex items-center px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-lg transition">
+                       class="inline-flex items-center px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-lg transition">
                         <i class="fas fa-paper-plane mr-2"></i>Solicitar registro para fecha no reportada
                     </a>
                 </div>
@@ -51,7 +51,7 @@
 
         <!-- Estado de tus solicitudes -->
         <div class="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
-            <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4 flex items-center justify-between">
+            <div class="bg-gradient-to-r from-teal-600 to-emerald-600 px-6 py-4 flex items-center justify-between">
                 <h3 class="text-xl font-bold text-white">
                     <i class="fas fa-paper-plane mr-2"></i> Estado de tus solicitudes de registro
                 </h3>
@@ -89,7 +89,7 @@
                                 </span>
                                 <p class="text-xs text-gray-500 mt-1">El Admin aprobó tu solicitud</p>
                                 @elseif($req->status === 'rejected')
-                                <span class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold bg-red-100 text-red-800">
+                                <span class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold bg-slate-100 text-slate-800">
                                     <i class="fas fa-times-circle mr-2"></i> Rechazada
                                 </span>
                                 <p class="text-xs text-gray-500 mt-1">El Admin rechazó tu solicitud</p>
@@ -107,7 +107,7 @@
                                 <i class="fas fa-inbox text-4xl text-gray-300 mb-3"></i>
                                 <p>Aún no has enviado solicitudes de registro.</p>
                                 <p class="text-sm mt-1">Si necesitas agregar consumos de días anteriores, envía una solicitud para que el Admin la apruebe.</p>
-                                <a href="{{ route('cefa.huellacarbono.leader.request_form') }}" class="inline-flex items-center mt-4 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition">
+                                <a href="{{ route('cefa.huellacarbono.leader.request_form') }}" class="inline-flex items-center mt-4 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-medium rounded-lg transition">
                                     <i class="fas fa-paper-plane mr-2"></i> Solicitar registro
                                 </a>
                             </td>

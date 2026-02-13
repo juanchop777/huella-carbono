@@ -6,7 +6,7 @@
         <!-- Header -->
         <div class="mb-8">
             <h1 class="text-4xl font-bold text-gray-900 mb-2">
-                <i class="fas fa-history text-purple-600"></i> Historial de Registros
+                <i class="fas fa-history text-teal-600"></i> Historial de Registros
             </h1>
             <p class="text-gray-600">{{ $unit->name }}</p>
         </div>
@@ -52,7 +52,7 @@
 
         <!-- Tabla de Historial -->
         <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
-            <div class="bg-gradient-to-r from-purple-600 to-pink-700 px-6 py-4">
+            <div class="bg-gradient-to-r from-teal-600 to-emerald-700 px-6 py-4">
                 <h3 class="text-xl font-bold text-white">
                     <i class="fas fa-list mr-2"></i> Registros de Consumo
                 </h3>

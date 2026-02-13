@@ -6,18 +6,18 @@
         <!-- Header -->
         <div class="mb-8">
             <h1 class="text-4xl font-bold text-gray-900 mb-2">
-                <i class="fas fa-paper-plane text-amber-600"></i> Solicitar Registro (fecha pasada)
+                <i class="fas fa-paper-plane text-teal-600"></i> Solicitar Registro (fecha pasada)
             </h1>
             <p class="text-gray-600">Unidad: <strong>{{ $unit->name }}</strong></p>
         </div>
 
         <!-- Información -->
-        <div class="bg-amber-50 border-l-4 border-amber-500 rounded-lg p-4 mb-8">
+        <div class="bg-teal-50 border-l-4 border-teal-500 rounded-lg p-4 mb-8">
             <div class="flex items-start">
-                <i class="fas fa-info-circle text-amber-600 text-2xl mr-3"></i>
+                <i class="fas fa-info-circle text-teal-600 text-2xl mr-3"></i>
                 <div>
-                    <h4 class="font-semibold text-amber-900 mb-1">Requiere aprobación del Admin</h4>
-                    <p class="text-sm text-amber-800">
+                    <h4 class="font-semibold text-teal-900 mb-1">Requiere aprobación del Admin</h4>
+                    <p class="text-sm text-teal-800">
                         Solo puedes registrar el consumo del <strong>día actual</strong> directamente. Para agregar consumos de días anteriores debes enviar esta solicitud; un Admin la revisará y aprobará o rechazará.
                     </p>
                 </div>
@@ -32,12 +32,12 @@
                 <!-- Fecha (solo pasada) -->
                 <div class="mb-6">
                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                        Fecha del consumo a reportar <span class="text-red-500">*</span>
+                        Fecha del consumo a reportar <span class="text-slate-500">*</span>
                     </label>
                     <input type="date" name="consumption_date" id="consumption_date"
                            max="{{ \Carbon\Carbon::yesterday()->format('Y-m-d') }}"
                            required
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent">
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
                     <p class="text-xs text-gray-500 mt-1">Solo fechas anteriores (el día actual se registra en "Registrar Consumo")</p>
                 </div>
 
@@ -45,7 +45,7 @@
                 <div class="mb-6">
                     <label class="block text-sm font-medium text-gray-700 mb-2">Motivo u observaciones (opcional)</label>
                     <textarea name="observations" id="observations" rows="2"
-                              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
+                              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
                               placeholder="Ej: Se olvidó reportar ese día..."></textarea>
                 </div>
 
@@ -53,11 +53,11 @@
                 <div class="mb-6">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-lg font-semibold text-gray-900">
-                            <i class="fas fa-list-ul text-amber-600 mr-2"></i>
+                            <i class="fas fa-list-ul text-teal-600 mr-2"></i>
                             Variables a incluir en la solicitud
                         </h3>
                         <button type="button" onclick="addVariableRow()" 
-                                class="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg font-semibold transition shadow">
+                                class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg font-semibold transition shadow">
                             <i class="fas fa-plus mr-2"></i>Agregar Variable
                         </button>
                     </div>
@@ -65,9 +65,9 @@
                 </div>
 
                 <!-- Preview -->
-                <div id="totalPreview" class="bg-gradient-to-r from-amber-50 to-orange-50 border-l-4 border-amber-500 rounded-lg p-6 mb-6">
+                <div id="totalPreview" class="bg-gradient-to-r from-teal-50 to-emerald-50 border-l-4 border-teal-500 rounded-lg p-6 mb-6">
                     <h4 class="font-semibold text-gray-900 mb-3 flex items-center">
-                        <i class="fas fa-calculator text-amber-600 mr-2"></i>
+                        <i class="fas fa-calculator text-teal-600 mr-2"></i>
                         Resumen de la solicitud
                     </h4>
                     <div class="grid grid-cols-2 gap-4 text-sm">
@@ -77,7 +77,7 @@
                         </div>
                         <div class="text-right">
                             <p class="text-gray-600 mb-1">CO₂ Total estimado:</p>
-                            <p class="text-4xl font-bold text-amber-600" id="totalCO2">0 kg</p>
+                            <p class="text-4xl font-bold text-teal-600" id="totalCO2">0 kg</p>
                         </div>
                     </div>
                 </div>
@@ -85,7 +85,7 @@
                 <!-- Botones -->
                 <div class="flex space-x-4">
                     <button type="submit" 
-                            class="flex-1 bg-amber-600 hover:bg-amber-700 text-white px-6 py-4 rounded-xl font-bold text-lg transition shadow-lg">
+                            class="flex-1 bg-teal-600 hover:bg-teal-700 text-white px-6 py-4 rounded-xl font-bold text-lg transition shadow-lg">
                         <i class="fas fa-paper-plane mr-2"></i> Enviar Solicitud
                     </button>
                     <a href="{{ route('cefa.huellacarbono.leader.dashboard') }}" 
@@ -118,19 +118,19 @@ function addVariableRow() {
     
     const html = `
         <div id="${rowId}" class="bg-gray-50 border border-gray-200 rounded-xl p-6 relative">
-            <button type="button" onclick="removeVariableRow('${rowId}')" class="absolute top-4 right-4 text-red-600 hover:text-red-800">
+            <button type="button" onclick="removeVariableRow('${rowId}')" class="absolute top-4 right-4 text-slate-600 hover:text-slate-800">
                 <i class="fas fa-times-circle text-2xl"></i>
             </button>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="md:col-span-2">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Variable <span class="text-red-500">*</span></label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Variable <span class="text-slate-500">*</span></label>
                     <select class="variable-select w-full px-4 py-3 border border-gray-300 rounded-lg" data-row-id="${rowId}" required>
                         <option value="">-- Seleccione --</option>
                         ${factorsOptions}
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Cantidad <span class="text-red-500">*</span></label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Cantidad <span class="text-slate-500">*</span></label>
                     <input type="number" class="quantity-input w-full px-4 py-3 border border-gray-300 rounded-lg" step="0.001" min="0" required>
                 </div>
             </div>

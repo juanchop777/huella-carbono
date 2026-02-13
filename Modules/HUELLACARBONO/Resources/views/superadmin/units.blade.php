@@ -7,7 +7,7 @@
         <div class="flex items-center justify-between mb-8">
             <div>
                 <h1 class="text-4xl font-bold text-gray-900 mb-2">
-                    <i class="fas fa-industry text-blue-600"></i> Unidades Productivas
+                    <i class="fas fa-industry text-teal-600"></i> Unidades Productivas
                 </h1>
                 <p class="text-gray-600">Gestión de unidades y asignación de líderes</p>
             </div>
@@ -25,7 +25,7 @@
                         <p class="text-gray-600 mb-1">Total Unidades</p>
                         <p class="text-3xl font-bold text-gray-900">{{ $units->count() }}</p>
                     </div>
-                    <i class="fas fa-building text-4xl text-blue-500"></i>
+                    <i class="fas fa-building text-4xl text-teal-500"></i>
                 </div>
             </div>
             
@@ -43,16 +43,16 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-600 mb-1">Con Líder Asignado</p>
-                        <p class="text-3xl font-bold text-purple-600">{{ $units->whereNotNull('leader_user_id')->count() }}</p>
+                        <p class="text-3xl font-bold text-teal-600">{{ $units->whereNotNull('leader_user_id')->count() }}</p>
                     </div>
-                    <i class="fas fa-user-tie text-4xl text-purple-500"></i>
+                    <i class="fas fa-user-tie text-4xl text-teal-500"></i>
                 </div>
             </div>
         </div>
 
         <!-- Tabla de Unidades -->
         <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
-            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 px-6 py-4">
+            <div class="bg-gradient-to-r from-teal-600 to-emerald-700 px-6 py-4">
                 <h3 class="text-xl font-bold text-white">
                     <i class="fas fa-list mr-2"></i> Listado de Unidades Productivas
                 </h3>
@@ -74,8 +74,8 @@
                         <tr class="hover:bg-gray-50 transition">
                             <td class="px-6 py-4">
                                 <div class="flex items-center">
-                                    <div class="bg-blue-100 w-10 h-10 rounded-lg flex items-center justify-center mr-3">
-                                        <i class="fas fa-industry text-blue-600"></i>
+                                    <div class="bg-teal-100 w-10 h-10 rounded-lg flex items-center justify-center mr-3">
+                                        <i class="fas fa-industry text-teal-600"></i>
                                     </div>
                                     <div>
                                         <p class="text-sm font-semibold text-gray-900">{{ $unit->name }}</p>
@@ -104,7 +104,7 @@
                                         <i class="fas fa-check-circle mr-1"></i> Activa
                                     </span>
                                 @else
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">
                                         <i class="fas fa-times-circle mr-1"></i> Inactiva
                                     </span>
                                 @endif
@@ -115,17 +115,17 @@
                                         $leaderDisplay = $unit->leader ? (($unit->leader->person ? trim($unit->leader->person->first_name.' '.$unit->leader->person->first_last_name.' '.$unit->leader->person->second_last_name) : $unit->leader->nickname) . ' — ' . $unit->leader->email) : '';
                                     @endphp
                                     <button onclick="openAssignLeaderModal({{ $unit->id }}, {{ json_encode($unit->name) }}, {{ $unit->leader_user_id ?? 'null' }}, {{ json_encode($leaderDisplay) }})" 
-                                            class="text-blue-600 hover:text-blue-800 transition"
+                                            class="text-teal-600 hover:text-teal-800 transition"
                                             title="{{ $unit->leader ? 'Cambiar Líder' : 'Asignar Líder' }}">
                                         <i class="fas fa-user-plus text-lg"></i>
                                     </button>
-                                    <button onclick="openEditModal({{ $unit->id }}, {{ json_encode($unit->name) }}, {{ json_encode($unit->code) }}, {{ json_encode($unit->description ?? '') }})" 
+                                    <button onclick="openEditModal({{ $unit->id }}, {{ json_encode($unit->name) }}, {{ json_encode($unit->code) }}, {{ json_encode($unit->description ?? '') }}, {{ $unit->latitude !== null ? $unit->latitude : 'null' }}, {{ $unit->longitude !== null ? $unit->longitude : 'null' }})" 
                                             class="text-green-600 hover:text-green-800 transition"
                                             title="Editar">
                                         <i class="fas fa-edit text-lg"></i>
                                     </button>
                                     <button onclick="toggleStatus({{ $unit->id }}, {{ $unit->is_active ? '0' : '1' }})" 
-                                            class="{{ $unit->is_active ? 'text-red-600 hover:text-red-800' : 'text-green-600 hover:text-green-800' }} transition"
+                                            class="{{ $unit->is_active ? 'text-amber-600 hover:text-amber-800' : 'text-green-600 hover:text-green-800' }} transition"
                                             title="{{ $unit->is_active ? 'Desactivar' : 'Activar' }}">
                                         <i class="fas fa-{{ $unit->is_active ? 'toggle-on' : 'toggle-off' }} text-lg"></i>
                                     </button>
@@ -152,7 +152,7 @@
 <div id="assignLeaderModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6">
         <h3 class="text-2xl font-bold text-gray-900 mb-2">
-            <i class="fas fa-user-plus text-blue-600 mr-2"></i>
+            <i class="fas fa-user-plus text-teal-600 mr-2"></i>
             Asignar o cambiar líder
         </h3>
         <p class="text-gray-600 mb-2" id="unitNameText"></p>
@@ -207,14 +207,14 @@
             @csrf
             
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Nombre <span class="text-red-500">*</span></label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Nombre <span class="text-slate-500">*</span></label>
                 <input type="text" name="name" id="create_unit_name" required
                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
                        placeholder="Ej: Unidad de Café">
             </div>
             
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Código <span class="text-red-500">*</span></label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Código <span class="text-slate-500">*</span></label>
                 <input type="text" name="code" id="create_unit_code" required
                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
                        placeholder="Ej: UP-CAFE">
@@ -227,6 +227,22 @@
                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
                           placeholder="Descripción de la unidad productiva..."></textarea>
             </div>
+            
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Latitud</label>
+                    <input type="text" name="latitude" id="create_unit_latitude" inputmode="decimal"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                           placeholder="Ej: 4.5709">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Longitud</label>
+                    <input type="text" name="longitude" id="create_unit_longitude" inputmode="decimal"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                           placeholder="Ej: -75.6811">
+                </div>
+            </div>
+            <p class="text-xs text-gray-500 -mt-2 mb-4">Opcional. Para mapa de calor por ubicación.</p>
             
             <div class="mb-4 relative">
                 <label class="block text-sm font-medium text-gray-700 mb-2">Asignar Líder (Opcional)</label>
@@ -262,13 +278,13 @@
             <input type="hidden" id="edit_unit_id" name="unit_id">
             
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Nombre <span class="text-red-500">*</span></label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Nombre <span class="text-slate-500">*</span></label>
                 <input type="text" name="name" id="edit_unit_name" required
                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
             </div>
             
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Código <span class="text-red-500">*</span></label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Código <span class="text-slate-500">*</span></label>
                 <input type="text" name="code" id="edit_unit_code" required
                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
             </div>
@@ -277,6 +293,21 @@
                 <label class="block text-sm font-medium text-gray-700 mb-2">Descripción</label>
                 <textarea name="description" id="edit_unit_description" rows="3"
                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"></textarea>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Latitud</label>
+                    <input type="text" name="latitude" id="edit_unit_latitude" inputmode="decimal"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                           placeholder="Ej: 4.5709">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Longitud</label>
+                    <input type="text" name="longitude" id="edit_unit_longitude" inputmode="decimal"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                           placeholder="Ej: -75.6811">
+                </div>
             </div>
             
             <div class="flex space-x-3">
@@ -377,11 +408,13 @@ function openAssignLeaderModal(unitId, unitName, currentLeaderId, currentLeaderN
 setupLeaderAutocomplete('assign_leader_search', 'assign_leader_user_id', 'assign_leader_list');
 setupLeaderAutocomplete('create_unit_leader_search', 'create_unit_leader', 'create_unit_leader_list');
 
-function openEditModal(unitId, unitName, unitCode, unitDescription) {
+function openEditModal(unitId, unitName, unitCode, unitDescription, latitude, longitude) {
     document.getElementById('edit_unit_id').value = unitId;
     document.getElementById('edit_unit_name').value = unitName;
     document.getElementById('edit_unit_code').value = unitCode;
     document.getElementById('edit_unit_description').value = unitDescription || '';
+    document.getElementById('edit_unit_latitude').value = (latitude != null && latitude !== '') ? latitude : '';
+    document.getElementById('edit_unit_longitude').value = (longitude != null && longitude !== '') ? longitude : '';
     document.getElementById('editUnitModal').classList.remove('hidden');
 }
 
@@ -446,6 +479,8 @@ document.getElementById('createUnitForm').addEventListener('submit', function(e)
         name: document.getElementById('create_unit_name').value,
         code: document.getElementById('create_unit_code').value,
         description: document.getElementById('create_unit_description').value,
+        latitude: document.getElementById('create_unit_latitude').value || null,
+        longitude: document.getElementById('create_unit_longitude').value || null,
         leader_user_id: document.getElementById('create_unit_leader').value || null
     };
     
@@ -518,7 +553,9 @@ document.getElementById('editUnitForm').addEventListener('submit', function(e) {
     const data = {
         name: document.getElementById('edit_unit_name').value,
         code: document.getElementById('edit_unit_code').value,
-        description: document.getElementById('edit_unit_description').value
+        description: document.getElementById('edit_unit_description').value,
+        latitude: document.getElementById('edit_unit_latitude').value || null,
+        longitude: document.getElementById('edit_unit_longitude').value || null
     };
     
     fetch(`/huellacarbono/admin/unidades/${unitId}/update`, {

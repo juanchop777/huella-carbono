@@ -7,12 +7,12 @@
         <div class="flex items-center justify-between mb-8">
             <div>
                 <h1 class="text-4xl font-bold text-gray-900 mb-2">
-                    <i class="fas fa-flask text-purple-600"></i> Factores de Emisión
+                    <i class="fas fa-flask text-teal-600"></i> Factores de Emisión
                 </h1>
                 <p class="text-gray-600">Gestión de variables y coeficientes de cálculo</p>
             </div>
             <button type="button" id="btnNewFactor" 
-                    class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl font-semibold transition shadow-lg flex items-center">
+                    class="bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-xl font-semibold transition shadow-lg flex items-center">
                 <i class="fas fa-plus mr-2"></i> Nuevo Factor
             </button>
         </div>
@@ -33,7 +33,7 @@
 
         <!-- Tabla de Factores -->
         <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
-            <div class="bg-gradient-to-r from-purple-600 to-pink-700 px-6 py-4">
+            <div class="bg-gradient-to-r from-teal-600 to-emerald-700 px-6 py-4">
                 <h3 class="text-xl font-bold text-white">
                     <i class="fas fa-list-ol mr-2"></i> Factores de Emisión Configurados
                 </h3>
@@ -57,14 +57,14 @@
                         @foreach($factors as $factor)
                         <tr class="hover:bg-gray-50 transition">
                             <td class="px-6 py-4 text-center">
-                                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-purple-100 text-purple-700 font-bold text-sm">
+                                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-teal-100 text-teal-700 font-bold text-sm">
                                     {{ $factor->order }}
                                 </span>
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center">
-                                    <div class="bg-purple-100 w-10 h-10 rounded-lg flex items-center justify-center mr-3">
-                                        <i class="fas fa-leaf text-purple-600"></i>
+                                    <div class="bg-teal-100 w-10 h-10 rounded-lg flex items-center justify-center mr-3">
+                                        <i class="fas fa-leaf text-teal-600"></i>
                                     </div>
                                     <div>
                                         <p class="text-sm font-semibold text-gray-900">{{ $factor->name }}</p>
@@ -102,7 +102,7 @@
                                         <i class="fas fa-check-circle mr-1"></i> Activo
                                     </span>
                                 @else
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">
                                         <i class="fas fa-times-circle mr-1"></i> Inactivo
                                     </span>
                                 @endif
@@ -167,48 +167,48 @@
 <div id="createFactorModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
         <h3 class="text-2xl font-bold text-gray-900 mb-4">
-            <i class="fas fa-plus text-purple-600 mr-2"></i> Nuevo Factor de Emisión
+            <i class="fas fa-plus text-teal-600 mr-2"></i> Nuevo Factor de Emisión
         </h3>
         <form id="createFactorForm">
             @csrf
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Nombre (Variable) *</label>
-                    <input type="text" name="name" id="create_name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500" placeholder="Ej: Consumo de agua">
+                    <input type="text" name="name" id="create_name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500" placeholder="Ej: Consumo de agua">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Código *</label>
-                    <input type="text" name="code" id="create_code" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500" placeholder="Ej: WATER">
+                    <input type="text" name="code" id="create_code" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500" placeholder="Ej: WATER">
                 </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Unidad de Medida *</label>
-                    <input type="text" name="unit" id="create_unit" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500" placeholder="Ej: L, Kw/h, galón">
+                    <input type="text" name="unit" id="create_unit" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500" placeholder="Ej: L, Kw/h, galón">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Factor de Emisión *</label>
-                    <input type="number" name="factor" id="create_factor" step="0.0000001" min="0" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500" placeholder="Ej: 0.0001427">
+                    <input type="number" name="factor" id="create_factor" step="0.0000001" min="0" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500" placeholder="Ej: 0.0001427">
                 </div>
             </div>
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700 mb-2">Descripción (opcional)</label>
-                <textarea name="description" id="create_description" rows="2" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500" placeholder="Descripción del factor..."></textarea>
+                <textarea name="description" id="create_description" rows="2" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500" placeholder="Descripción del factor..."></textarea>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Orden</label>
-                    <input type="number" name="order" id="create_order" min="0" value="{{ ($factors->max('order') ?? 0) + 1 }}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                    <input type="number" name="order" id="create_order" min="0" value="{{ ($factors->max('order') ?? 0) + 1 }}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500">
                 </div>
                 <div class="flex items-center pt-8">
                     <label class="flex items-center cursor-pointer">
-                        <input type="checkbox" name="requires_percentage" id="create_requires_percentage" value="1" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                        <input type="checkbox" name="requires_percentage" id="create_requires_percentage" value="1" class="rounded border-gray-300 text-teal-600 focus:ring-teal-500">
                         <span class="ml-2 text-sm text-gray-700">Requiere % Nitrógeno</span>
                     </label>
                 </div>
             </div>
             <div class="flex space-x-3">
-                <button type="submit" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition"><i class="fas fa-save mr-2"></i>Crear Factor</button>
+                <button type="submit" class="flex-1 bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg font-semibold transition"><i class="fas fa-save mr-2"></i>Crear Factor</button>
                 <button type="button" onclick="closeModal('createFactorModal')" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-lg font-semibold transition">Cancelar</button>
             </div>
         </form>
@@ -219,7 +219,7 @@
 <div id="editFactorModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-6">
         <h3 class="text-2xl font-bold text-gray-900 mb-4">
-            <i class="fas fa-edit text-purple-600 mr-2"></i>
+            <i class="fas fa-edit text-teal-600 mr-2"></i>
             Editar Factor de Emisión
         </h3>
         
@@ -231,13 +231,13 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Nombre (Variable)</label>
                     <input type="text" name="name" id="factor_name" required
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
                            placeholder="Ej: Consumo de agua">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Código</label>
                     <input type="text" name="code" id="factor_code" required
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
                            placeholder="Ej: WATER">
                 </div>
             </div>
@@ -246,13 +246,13 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Unidad de Medida</label>
                     <input type="text" name="unit" id="factor_unit" required
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
                            placeholder="Ej: L, Kw/h">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Factor de Emisión</label>
                     <input type="number" name="factor" id="factor_value" step="0.0000001" min="0" required
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
                            placeholder="Ej: 0.0001427">
                 </div>
             </div>
@@ -260,7 +260,7 @@
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700 mb-2">Descripción (opcional)</label>
                 <textarea name="description" id="factor_description" rows="2"
-                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
                           placeholder="Descripción del factor..."></textarea>
             </div>
             
@@ -268,19 +268,19 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Orden</label>
                     <input type="number" name="order" id="factor_order" min="0" required
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500">
                 </div>
                 <div class="flex items-center pt-8">
                     <label class="flex items-center cursor-pointer">
                         <input type="checkbox" name="requires_percentage" id="factor_requires_percentage" value="1"
-                               class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                               class="rounded border-gray-300 text-teal-600 focus:ring-teal-500">
                         <span class="ml-2 text-sm text-gray-700">Requiere % Nitrógeno</span>
                     </label>
                 </div>
             </div>
             
             <div class="flex space-x-3">
-                <button type="submit" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition">
+                <button type="submit" class="flex-1 bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg font-semibold transition">
                     <i class="fas fa-save mr-2"></i>Guardar Cambios
                 </button>
                 <button type="button" onclick="closeModal('editFactorModal')" 

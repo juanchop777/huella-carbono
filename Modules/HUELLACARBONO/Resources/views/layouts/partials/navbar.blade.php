@@ -28,8 +28,8 @@
                                 <i class="fas fa-bell mr-2"></i>
                                 @if(isset($showLeaderAlertsDot) && $showLeaderAlertsDot)
                                 <span class="absolute -top-0.5 -right-1 flex h-2.5 w-2.5" title="{{ $leaderAlertsCount }} día(s) sin reporte">
-                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
                                 </span>
                                 @endif
                             </span>Alertas
@@ -39,20 +39,25 @@
                         </a>
                     @elseif(checkRol('huellacarbono.admin'))
                         <!-- Enlaces para Admin (solo si no tiene rol Líder) -->
-                        <a href="{{ route('cefa.huellacarbono.admin.units.index') }}" class="text-gray-700 hover:text-green-600 px-4 py-2.5 rounded-lg hover:bg-gray-100 transition text-sm font-medium whitespace-nowrap">
+                        <a href="{{ route('cefa.huellacarbono.admin.dashboard') }}" class="inline-flex items-center gap-2 text-slate-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-emerald-50 transition text-sm font-medium whitespace-nowrap">
+                            <i class="fas fa-gauge-high mr-1"></i>Panel
+                            <span class="px-1.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-xs font-semibold">Admin</span>
+                        </a>
+                        <span class="w-px h-5 bg-slate-200 mx-0.5" aria-hidden="true"></span>
+                        <a href="{{ route('cefa.huellacarbono.admin.units.index') }}" class="text-slate-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-slate-100 transition text-sm font-medium whitespace-nowrap">
                             <i class="fas fa-industry mr-2"></i>Unidades
                         </a>
-                        <a href="{{ route('cefa.huellacarbono.admin.factors.index') }}" class="text-gray-700 hover:text-green-600 px-4 py-2.5 rounded-lg hover:bg-gray-100 transition text-sm font-medium whitespace-nowrap">
+                        <a href="{{ route('cefa.huellacarbono.admin.factors.index') }}" class="text-slate-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-slate-100 transition text-sm font-medium whitespace-nowrap">
                             <i class="fas fa-flask mr-2"></i>Factores
                         </a>
-                        <a href="{{ route('cefa.huellacarbono.admin.users.index') }}" class="text-gray-700 hover:text-green-600 px-4 py-2.5 rounded-lg hover:bg-gray-100 transition text-sm font-medium whitespace-nowrap">
+                        <a href="{{ route('cefa.huellacarbono.admin.users.index') }}" class="text-slate-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-slate-100 transition text-sm font-medium whitespace-nowrap">
                             <i class="fas fa-users mr-2"></i>Usuarios
                         </a>
-                        <span class="w-px h-6 bg-gray-200 mx-1" aria-hidden="true"></span>
-                        <a href="{{ route('cefa.huellacarbono.admin.consumptions.index') }}" class="text-gray-700 hover:text-green-600 px-4 py-2.5 rounded-lg hover:bg-gray-100 transition text-sm font-medium whitespace-nowrap">
+                        <span class="w-px h-5 bg-slate-200 mx-0.5" aria-hidden="true"></span>
+                        <a href="{{ route('cefa.huellacarbono.admin.consumptions.index') }}" class="text-slate-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-slate-100 transition text-sm font-medium whitespace-nowrap">
                             <i class="fas fa-clipboard-list mr-2"></i>Consumos
                         </a>
-                        <a href="{{ route('cefa.huellacarbono.admin.requests.index') }}" class="text-gray-700 hover:text-green-600 px-4 py-2.5 rounded-lg hover:bg-gray-100 transition text-sm font-medium whitespace-nowrap">
+                        <a href="{{ route('cefa.huellacarbono.admin.requests.index') }}" class="text-slate-700 hover:text-green-600 px-3 py-2 rounded-lg hover:bg-slate-100 transition text-sm font-medium whitespace-nowrap relative">
                             <i class="fas fa-paper-plane mr-2"></i>Solicitudes
                         </a>
                     @else
@@ -117,7 +122,7 @@
                         @endif
                         <hr class="my-2">
                         <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
-                           class="block px-4 py-2 text-red-600 hover:bg-red-50">
+                           class="block px-4 py-2 text-slate-600 hover:bg-slate-100">
                             <i class="fas fa-sign-out-alt mr-2"></i>Cerrar Sesión
                         </a>
                     </div>
@@ -161,8 +166,8 @@
                             <i class="fas fa-bell mr-2"></i>
                             @if(isset($showLeaderAlertsDot) && $showLeaderAlertsDot)
                             <span class="absolute -top-0.5 left-4 flex h-2.5 w-2.5" title="{{ $leaderAlertsCount }} día(s) sin reporte">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
                             </span>
                             @endif
                         </span>Alertas

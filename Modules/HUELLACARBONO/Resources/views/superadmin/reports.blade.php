@@ -6,7 +6,7 @@
         <!-- Header -->
         <div class="mb-8">
             <h1 class="text-4xl font-bold text-gray-900 mb-2">
-                <i class="fas fa-file-pdf text-red-600"></i> Reportes y Exportaciones
+                <i class="fas fa-file-pdf text-teal-600"></i> Reportes y Exportaciones
             </h1>
             <p class="text-gray-600">Genera y descarga reportes en PDF o Excel</p>
         </div>
@@ -16,8 +16,8 @@
             <!-- Reporte General -->
             <div class="bg-white rounded-2xl shadow-xl p-8">
                 <div class="flex items-center mb-6">
-                    <div class="bg-red-100 w-16 h-16 rounded-xl flex items-center justify-center mr-4">
-                        <i class="fas fa-file-pdf text-3xl text-red-600"></i>
+                    <div class="bg-teal-100 w-16 h-16 rounded-xl flex items-center justify-center mr-4">
+                        <i class="fas fa-file-pdf text-3xl text-teal-600"></i>
                     </div>
                     <div>
                         <h3 class="text-2xl font-bold text-gray-900">Reporte General</h3>
@@ -28,7 +28,7 @@
                 <form id="generalReportForm">
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Período</label>
-                        <select name="period" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500">
+                        <select name="period" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500">
                             <option value="current_month">Mes Actual</option>
                             <option value="last_month">Mes Anterior</option>
                             <option value="current_quarter">Trimestre Actual</option>
@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     
-                    <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl font-bold transition shadow-lg">
+                    <button type="submit" class="w-full bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-xl font-bold transition shadow-lg">
                         <i class="fas fa-file-pdf mr-2"></i>Generar PDF
                     </button>
                 </form>
@@ -100,7 +100,7 @@
         <!-- Reportes por Unidad -->
         <div class="bg-white rounded-2xl shadow-xl p-8 mb-8">
             <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                <i class="fas fa-industry text-blue-600 mr-3"></i>
+                <i class="fas fa-industry text-teal-600 mr-3"></i>
                 Reporte por Unidad Específica
             </h3>
             
@@ -159,7 +159,7 @@
         </div>
 
         <!-- Estadísticas de Exportaciones -->
-        <div class="bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl shadow-xl p-8 text-white mb-8">
+        <div class="bg-gradient-to-r from-teal-500 to-cyan-600 rounded-2xl shadow-xl p-8 text-white mb-8">
             <div class="flex items-center justify-between">
                 <div>
                     <h3 class="text-2xl font-bold mb-2">

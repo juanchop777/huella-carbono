@@ -159,7 +159,9 @@ class AdminController extends Controller
 
     public function users()
     {
-        $users = User::with('roles')->paginate(20);
+        $users = User::with(['roles' => function ($q) {
+            $q->where('slug', 'like', 'huellacarbono.%');
+        }])->paginate(20);
         $roles = \Modules\SICA\Entities\Role::where('slug', 'like', 'huellacarbono.%')->get();
         return view('huellacarbono::superadmin.users', compact('users', 'roles'));
     }
@@ -218,6 +220,8 @@ class AdminController extends Controller
                 'name' => 'required|string|max:255',
                 'code' => 'required|string|max:50|unique:hc_productive_units,code',
                 'description' => 'nullable|string',
+                'latitude' => 'nullable|numeric|between:-90,90',
+                'longitude' => 'nullable|numeric|between:-180,180',
                 'leader_user_id' => 'nullable|exists:users,id'
             ]);
             $unit = ProductiveUnit::create($validated);
@@ -249,7 +253,9 @@ class AdminController extends Controller
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
                 'code' => 'required|string|max:50|unique:hc_productive_units,code,' . $id,
-                'description' => 'nullable|string'
+                'description' => 'nullable|string',
+                'latitude' => 'nullable|numeric|between:-90,90',
+                'longitude' => 'nullable|numeric|between:-180,180'
             ]);
             $unit->update($validated);
             return response()->json(['success' => true, 'message' => 'Unidad actualizada exitosamente', 'unit' => $unit]);

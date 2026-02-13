@@ -16,6 +16,8 @@ class ProductiveUnit extends Model
         'name',
         'code',
         'description',
+        'latitude',
+        'longitude',
         'productive_unit_id', // Relación con unidad original de SICA
         'leader_user_id',
         'is_active'
@@ -23,6 +25,8 @@ class ProductiveUnit extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
+        'latitude' => 'float',
+        'longitude' => 'float',
     ];
 
     /**

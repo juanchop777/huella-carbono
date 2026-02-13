@@ -28,8 +28,34 @@ class PublicController extends Controller
             }
         }
         
-        // Usuario sin rol específico o visitante → vista pública
-        return view('huellacarbono::public.index');
+        // Centro: Centro de Formación Agroindustrial La Angostura, Campo Alegre, Campoalegre, Huila
+        $centerLat = (float) env('MAPBOX_CENTER_LAT', 2.612606);
+        $centerLng = (float) env('MAPBOX_CENTER_LNG', -75.361439);
+        $heatmapZones = [
+            ['name' => 'Complejo Agroindustrial', 'lat' => $centerLat, 'lng' => $centerLng, 'co2' => 420],
+            ['name' => 'PTAR', 'lat' => $centerLat - 0.0004, 'lng' => $centerLng - 0.0005, 'co2' => 380],
+            ['name' => 'PTAP', 'lat' => $centerLat + 0.0002, 'lng' => $centerLng - 0.0003, 'co2' => 180],
+            ['name' => 'Ganadería', 'lat' => $centerLat - 0.0003, 'lng' => $centerLng + 0.0004, 'co2' => 350],
+            ['name' => 'Corral', 'lat' => $centerLat - 0.0005, 'lng' => $centerLng + 0.0002, 'co2' => 320],
+            ['name' => 'Invernadero', 'lat' => $centerLat - 0.0006, 'lng' => $centerLng - 0.0002, 'co2' => 220],
+            ['name' => 'Vivero', 'lat' => $centerLat + 0.0003, 'lng' => $centerLng + 0.0003, 'co2' => 90],
+            ['name' => 'Agroquímicos', 'lat' => $centerLat + 0.0005, 'lng' => $centerLng + 0.0005, 'co2' => 280],
+            ['name' => 'Cítricos', 'lat' => $centerLat + 0.0006, 'lng' => $centerLng + 0.0006, 'co2' => 70],
+            ['name' => 'Unidad Piscícola', 'lat' => $centerLat + 0.0004, 'lng' => $centerLng + 0.0007, 'co2' => 95],
+            ['name' => 'Biblioteca', 'lat' => $centerLat + 0.0001, 'lng' => $centerLng - 0.0004, 'co2' => 60],
+            ['name' => 'Restaurante', 'lat' => $centerLat - 0.0001, 'lng' => $centerLng - 0.0001, 'co2' => 190],
+            ['name' => 'Gimnasio', 'lat' => $centerLat - 0.0002, 'lng' => $centerLng, 'co2' => 85],
+            ['name' => 'Tecnoparque', 'lat' => $centerLat - 0.0007, 'lng' => $centerLng - 0.0004, 'co2' => 150],
+            ['name' => 'Lago / Casa de Lago', 'lat' => $centerLat - 0.0004, 'lng' => $centerLng - 0.0006, 'co2' => 45],
+            ['name' => 'Centro de Acopio Residuos', 'lat' => $centerLat - 0.0006, 'lng' => $centerLng + 0.0001, 'co2' => 110],
+            ['name' => 'Subestación', 'lat' => $centerLat + 0.0002, 'lng' => $centerLng - 0.0005, 'co2' => 260],
+            ['name' => 'Lab. Ciencias Básicas', 'lat' => $centerLat - 0.0002, 'lng' => $centerLng + 0.00035, 'co2' => 120],
+            ['name' => 'Centro de Convivencia', 'lat' => $centerLat + 0.00055, 'lng' => $centerLng + 0.0004, 'co2' => 75],
+            ['name' => 'Administrativos Casona', 'lat' => $centerLat + 0.00005, 'lng' => $centerLng + 0.0001, 'co2' => 140],
+        ];
+        $mapboxToken = config('services.mapbox.token', env('MAPBOX_TOKEN'));
+
+        return view('huellacarbono::public.index', compact('heatmapZones', 'mapboxToken'));
     }
 
     /**
