@@ -40,7 +40,7 @@
                     </label>
                     <input type="number" name="quantity" id="quantity" 
                            value="{{ $consumption->quantity }}"
-                           step="0.001" min="0" required
+                           step="0.001" min="0.001" required
                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
                 </div>
 
@@ -85,9 +85,10 @@
 <script>
 $('#editConsumptionForm').on('submit', function(e) {
     e.preventDefault();
-    
-    const formData = $(this).serialize();
-    
+    var $btn = $(this).find('button[type=submit]');
+    if ($btn.prop('disabled')) return;
+    $btn.prop('disabled', true).data('orig-html', $btn.html()).html('<i class="fas fa-spinner fa-spin mr-2"></i> Guardando...');
+    var formData = $(this).serialize();
     $.ajax({
         url: '{{ route("cefa.huellacarbono.leader.update_consumption", $consumption->id) }}',
         method: 'PUT',
@@ -97,17 +98,16 @@ $('#editConsumptionForm').on('submit', function(e) {
         },
         success: function(response) {
             if(response.success) {
-                Swal.fire({
-                    icon: 'success',
-                    title: '¡Actualizado!',
-                    text: response.message,
-                    confirmButtonColor: '#10b981',
-                }).then(() => {
+                showToast('success', response.message);
+                setTimeout(function() {
                     window.location.href = '{{ route("cefa.huellacarbono.leader.history") }}';
-                });
+                }, 1200);
+            } else {
+                $btn.prop('disabled', false).html($btn.data('orig-html'));
             }
         },
         error: function(xhr) {
+            $btn.prop('disabled', false).html($btn.data('orig-html'));
             showToast('error', 'Error al actualizar el registro');
         }
     });

@@ -30,22 +30,6 @@
                 
                 <form id="carbonCalculatorForm">
                     @csrf
-                    
-                    <!-- Datos personales -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Nombre (opcional)</label>
-                            <input type="text" name="name" 
-                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                   placeholder="Tu nombre">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Email (opcional)</label>
-                            <input type="email" name="email" 
-                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                   placeholder="tu@email.com">
-                        </div>
-                    </div>
 
                     <!-- Período -->
                     <div class="mb-6">
@@ -79,15 +63,15 @@
                                 <span class="text-xs text-gray-500 ml-2">(Factor: {{ $factor->factor }})</span>
                             </label>
                             <input type="number" 
-                                   name="{{ strtolower($factor->code) }}_consumption" 
+                                   name="{{ strtolower(trim($factor->code)) }}_consumption" 
                                    id="{{ $factor->code }}"
                                    data-factor="{{ $factor->factor }}"
                                    data-requires-percentage="{{ $factor->requires_percentage ? 'true' : 'false' }}"
                                    step="0.001" 
-                                   min="0" 
-                                   value="0"
+                                   min="0.001" 
+                                   value=""
                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                   placeholder="Ingrese cantidad">
+                                   placeholder="Ingrese cantidad (mín. 0,001)">
                             
                             @if($factor->requires_percentage)
                             <input type="number" 
@@ -160,9 +144,11 @@
 $(document).ready(function() {
     $('#carbonCalculatorForm').on('submit', function(e) {
         e.preventDefault();
-        
-        const formData = $(this).serialize();
-        
+        var $form = $(this);
+        var $btn = $form.find('button[type=submit]');
+        if ($btn.prop('disabled')) return;
+        $btn.prop('disabled', true).data('orig-html', $btn.html()).html('<i class="fas fa-spinner fa-spin mr-2"></i> Calculando...');
+        var formData = $form.serialize();
         $.ajax({
             url: '{{ route("cefa.huellacarbono.calculate_personal") }}',
             method: 'POST',
@@ -171,7 +157,6 @@ $(document).ready(function() {
                 if(response.success) {
                     const totalCO2 = response.total_co2;
                     const trees = (totalCO2 / 22).toFixed(2);
-                    
                     $('#resultCard').html(`
                         <div class="animate-bounce mb-4">
                             <i class="fas fa-check-circle text-7xl text-green-500"></i>
@@ -189,12 +174,19 @@ $(document).ready(function() {
                             </p>
                         </div>
                     `);
-                    
                     showToast('success', response.message);
                 }
+                $btn.prop('disabled', false).html($btn.data('orig-html'));
             },
             error: function(xhr) {
-                showToast('error', 'Error al calcular la huella de carbono');
+                $btn.prop('disabled', false).html($btn.data('orig-html'));
+                var msg = 'Error al calcular la huella de carbono';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    msg = xhr.responseJSON.message;
+                } else if (xhr.responseJSON && xhr.responseJSON.errors) {
+                    msg = Object.values(xhr.responseJSON.errors).flat().join(' ');
+                }
+                showToast('error', msg);
                 console.error(xhr);
             }
         });

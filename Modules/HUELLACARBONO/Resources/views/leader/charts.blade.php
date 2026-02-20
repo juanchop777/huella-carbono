@@ -74,15 +74,24 @@ document.addEventListener('DOMContentLoaded', function() {
     var ctx = document.getElementById('trendChart');
     if (!ctx) return;
     new Chart(ctx, {
-        type: 'bar',
+        type: 'line',
         data: {
             labels: labels,
             datasets: [{
                 label: 'kg CO₂',
                 data: data,
-                backgroundColor: 'rgba(34, 197, 94, 0.6)',
                 borderColor: 'rgb(22, 163, 74)',
-                borderWidth: 1
+                backgroundColor: 'rgba(34, 197, 94, 0.15)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.3,
+                spanGaps: true,
+                showLine: true,
+                pointRadius: 6,
+                pointBackgroundColor: 'rgb(22, 163, 74)',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointHoverRadius: 8
             }]
         },
         options: {

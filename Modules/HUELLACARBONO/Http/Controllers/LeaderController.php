@@ -24,7 +24,8 @@ class LeaderController extends Controller
         
         if (!$unit) {
             return redirect()->route('cefa.huellacarbono.index')
-                ->with('error', 'No tienes una unidad productiva asignada');
+                ->with('message', 'Tienes rol de líder pero no tienes una unidad productiva asignada. Un administrador debe asignarte como líder en la sección Unidades.')
+                ->with('icon', 'error');
         }
 
         // Estadísticas de la semana actual
@@ -56,7 +57,9 @@ class LeaderController extends Controller
         $user = Auth::user();
         $unit = ProductiveUnit::where('leader_user_id', $user->id)->first();
         if (!$unit) {
-            return redirect()->route('cefa.huellacarbono.index')->with('error', 'No tienes una unidad productiva asignada');
+            return redirect()->route('cefa.huellacarbono.index')
+                ->with('message', 'Tienes rol de líder pero no tienes una unidad productiva asignada. Un administrador debe asignarte como líder en la sección Unidades.')
+                ->with('icon', 'error');
         }
         $today = Carbon::today();
         $daysWithoutReport = [];
@@ -91,6 +94,10 @@ class LeaderController extends Controller
         if (!$unit) {
             return redirect()->back()->with('error', 'No tienes una unidad productiva asignada');
         }
+        if (!$unit->is_active) {
+            return redirect()->route('cefa.huellacarbono.leader.dashboard')
+                ->with('error', 'Tu unidad productiva está desactivada. No puedes registrar consumos.');
+        }
 
         $emissionFactors = EmissionFactor::active()->get();
         
@@ -108,29 +115,46 @@ class LeaderController extends Controller
         if (!$unit) {
             return response()->json(['error' => 'No tienes una unidad productiva asignada'], 403);
         }
+        if (!$unit->is_active) {
+            return response()->json(['error' => 'Tu unidad está desactivada. No puedes registrar consumos.'], 403);
+        }
 
         $validated = $request->validate([
             'consumption_date' => 'required|date|date_equals:today',
             'variables' => 'required|array|min:1',
             'variables.*.emission_factor_id' => 'required|exists:hc_emission_factors,id',
-            'variables.*.quantity' => 'required|numeric|min:0',
+            'variables.*.quantity' => 'required|numeric|min:0.001',
             'variables.*.nitrogen_percentage' => 'nullable|numeric|min:0|max:100'
+        ], [
+            'variables.*.quantity.min' => 'La cantidad debe ser mayor que 0. No se permite guardar valor 0.',
         ]);
+
+        // Verificar primero si algún factor ya tiene registro para esta fecha en la unidad
+        $duplicateNames = [];
+        foreach ($validated['variables'] as $variable) {
+            $existing = DailyConsumption::where('productive_unit_id', $unit->id)
+                ->where('emission_factor_id', $variable['emission_factor_id'])
+                ->where('consumption_date', $validated['consumption_date'])
+                ->first();
+            if ($existing) {
+                $factor = EmissionFactor::find($variable['emission_factor_id']);
+                $duplicateNames[] = $factor ? $factor->name : 'Factor #' . $variable['emission_factor_id'];
+            }
+        }
+        if (!empty($duplicateNames)) {
+            $names = implode(', ', array_slice($duplicateNames, 0, 3));
+            if (count($duplicateNames) > 3) {
+                $names .= ' y ' . (count($duplicateNames) - 3) . ' más';
+            }
+            return response()->json([
+                'error' => 'Ya existe un registro para ese factor y esa fecha en la unidad. No se ha creado el duplicado. (' . $names . ')'
+            ], 422);
+        }
 
         $totalCO2 = 0;
         $count = 0;
 
         foreach ($validated['variables'] as $variable) {
-            // Verificar si ya existe un registro para esta fecha y factor
-            $existing = DailyConsumption::where('productive_unit_id', $unit->id)
-                ->where('emission_factor_id', $variable['emission_factor_id'])
-                ->where('consumption_date', $validated['consumption_date'])
-                ->first();
-
-            if ($existing) {
-                continue; // Saltar si ya existe
-            }
-
             // Obtener el factor de emisión
             $emissionFactor = EmissionFactor::find($variable['emission_factor_id']);
             
@@ -141,7 +165,7 @@ class LeaderController extends Controller
                 $co2 = $co2 * ($variable['nitrogen_percentage'] / 100);
             }
 
-            // Crear registro
+            // Crear registro (ya verificamos que no hay duplicados)
             DailyConsumption::create([
                 'productive_unit_id' => $unit->id,
                 'emission_factor_id' => $variable['emission_factor_id'],
@@ -176,13 +200,18 @@ class LeaderController extends Controller
         if (!$unit) {
             return response()->json(['error' => 'No tienes una unidad productiva asignada'], 403);
         }
+        if (!$unit->is_active) {
+            return response()->json(['error' => 'Tu unidad está desactivada. No puedes registrar consumos.'], 403);
+        }
 
         $validated = $request->validate([
             'emission_factor_id' => 'required|exists:hc_emission_factors,id',
             'consumption_date' => 'required|date|date_equals:' . now()->toDateString(),
-            'quantity' => 'required|numeric|min:0',
+            'quantity' => 'required|numeric|min:0.001',
             'nitrogen_percentage' => 'nullable|numeric|min:0|max:100',
             'observations' => 'nullable|string|max:500'
+        ], [
+            'quantity.min' => 'La cantidad debe ser mayor que 0. No se permite guardar valor 0.',
         ]);
 
         // Verificar si ya existe un registro para esta fecha y factor
@@ -193,7 +222,7 @@ class LeaderController extends Controller
 
         if ($existing) {
             return response()->json([
-                'error' => 'Ya existe un registro para este factor en la fecha seleccionada'
+                'error' => 'Ya existe un registro para ese factor y esa fecha en la unidad. El duplicado no se ha creado.'
             ], 422);
         }
 
@@ -227,8 +256,8 @@ class LeaderController extends Controller
             return redirect()->back()->with('error', 'No tienes una unidad productiva asignada');
         }
 
-        $startDate = $request->get('start_date', Carbon::now()->startOfMonth());
-        $endDate = $request->get('end_date', Carbon::now());
+        $startDate = $request->filled('start_date') ? Carbon::parse($request->start_date)->startOfDay() : Carbon::now()->subYear()->startOfYear();
+        $endDate = $request->filled('end_date') ? Carbon::parse($request->end_date)->endOfDay() : Carbon::now()->endOfDay();
 
         $consumptions = $unit->dailyConsumptions()
             ->whereBetween('consumption_date', [$startDate, $endDate])
@@ -239,12 +268,20 @@ class LeaderController extends Controller
 
         $totalCO2 = $unit->calculateCarbonFootprint($startDate, $endDate);
 
+        // Rango de fechas con datos de esta unidad (para limitar el selector)
+        $dateMin = $unit->dailyConsumptions()->min('consumption_date');
+        $dateMax = $unit->dailyConsumptions()->max('consumption_date');
+        $dateMin = $dateMin ? Carbon::parse($dateMin)->format('Y-m-d') : now()->startOfYear()->format('Y-m-d');
+        $dateMax = $dateMax ? Carbon::parse($dateMax)->format('Y-m-d') : now()->format('Y-m-d');
+
         return view('huellacarbono::leader.history', compact(
             'unit',
             'consumptions',
             'totalCO2',
             'startDate',
-            'endDate'
+            'endDate',
+            'dateMin',
+            'dateMax'
         ));
     }
 
@@ -280,9 +317,11 @@ class LeaderController extends Controller
             ->firstOrFail();
 
         $validated = $request->validate([
-            'quantity' => 'required|numeric|min:0',
+            'quantity' => 'required|numeric|min:0.001',
             'nitrogen_percentage' => 'nullable|numeric|min:0|max:100',
             'observations' => 'nullable|string|max:500'
+        ], [
+            'quantity.min' => 'La cantidad debe ser mayor que 0. No se permite guardar valor 0.',
         ]);
 
         $consumption->update($validated);
@@ -365,25 +404,33 @@ class LeaderController extends Controller
             $grouped = $consumptions->groupBy(function ($c) {
                 return Carbon::parse($c->consumption_date)->format('Y-W');
             });
-            foreach ($grouped->sortKeys() as $weekKey => $items) {
+            $weeks = collect();
+            for ($w = 0; $w < 12; $w++) {
+                $date = Carbon::now()->subWeeks(11 - $w);
+                $weeks->put($date->format('Y-W'), $date);
+            }
+            foreach ($weeks as $weekKey => $date) {
                 $chartLabels[] = 'Sem ' . substr($weekKey, 5);
-                $chartData[] = round($items->sum('co2_generated'), 2);
+                $chartData[] = $grouped->has($weekKey) ? round($grouped->get($weekKey)->sum('co2_generated'), 2) : 0;
             }
         } elseif ($period === 'yearly') {
             $grouped = $consumptions->groupBy(function ($c) {
                 return Carbon::parse($c->consumption_date)->format('Y');
             });
-            foreach ($grouped->sortKeys() as $year => $items) {
-                $chartLabels[] = $year;
-                $chartData[] = round($items->sum('co2_generated'), 2);
+            $years = range(Carbon::now()->year - 4, Carbon::now()->year);
+            foreach ($years as $year) {
+                $chartLabels[] = (string) $year;
+                $chartData[] = $grouped->has((string) $year) ? round($grouped->get((string) $year)->sum('co2_generated'), 2) : 0;
             }
         } else {
             $grouped = $consumptions->groupBy(function ($c) {
                 return Carbon::parse($c->consumption_date)->format('Y-m');
             });
-            foreach ($grouped->sortKeys() as $monthKey => $items) {
-                $chartLabels[] = Carbon::parse($monthKey . '-01')->translatedFormat('M Y');
-                $chartData[] = round($items->sum('co2_generated'), 2);
+            for ($m = 0; $m < 12; $m++) {
+                $date = Carbon::now()->subMonths(11 - $m);
+                $monthKey = $date->format('Y-m');
+                $chartLabels[] = $date->translatedFormat('M Y');
+                $chartData[] = $grouped->has($monthKey) ? round($grouped->get($monthKey)->sum('co2_generated'), 2) : 0;
             }
         }
 
@@ -399,6 +446,10 @@ class LeaderController extends Controller
         $unit = ProductiveUnit::where('leader_user_id', $user->id)->first();
         if (!$unit) {
             return redirect()->back()->with('error', 'No tienes una unidad productiva asignada');
+        }
+        if (!$unit->is_active) {
+            return redirect()->route('cefa.huellacarbono.leader.dashboard')
+                ->with('error', 'Tu unidad productiva está desactivada. No puedes solicitar registros.');
         }
         $emissionFactors = EmissionFactor::active()->get();
         $today = Carbon::today();
@@ -425,13 +476,18 @@ class LeaderController extends Controller
         if (!$unit) {
             return response()->json(['success' => false, 'message' => 'No tienes una unidad productiva asignada'], 403);
         }
+        if (!$unit->is_active) {
+            return response()->json(['success' => false, 'message' => 'Tu unidad está desactivada. No puedes solicitar registros.'], 403);
+        }
         $validated = $request->validate([
             'consumption_date' => 'required|date|before:today',
             'variables' => 'required|array|min:1',
             'variables.*.emission_factor_id' => 'required|exists:hc_emission_factors,id',
-            'variables.*.quantity' => 'required|numeric|min:0',
+            'variables.*.quantity' => 'required|numeric|min:0.001',
             'variables.*.nitrogen_percentage' => 'nullable|numeric|min:0|max:100',
             'observations' => 'nullable|string|max:500'
+        ], [
+            'variables.*.quantity.min' => 'La cantidad debe ser mayor que 0. No se permite guardar valor 0.',
         ]);
         $requestModel = ConsumptionRequest::create([
             'productive_unit_id' => $unit->id,

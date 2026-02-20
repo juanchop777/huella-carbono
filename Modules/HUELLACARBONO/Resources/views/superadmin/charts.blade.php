@@ -190,27 +190,39 @@ const trendChart = new Chart(document.getElementById('trendChart'), {
     }
 });
 
-// 2. Gráfica por Unidad
+// 2. Gráfica por Unidad (dispersión-líneas)
 unitChart = new Chart(document.getElementById('unitChart'), {
-    type: 'bar',
+    type: 'line',
     data: {
         labels: chartData.byUnit.labels,
         datasets: [{
             label: 'CO₂ (kg)',
             data: chartData.byUnit.data,
-            backgroundColor: colors,
-            borderRadius: 8
+            borderColor: '#10b981',
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.3,
+            pointRadius: 6,
+            pointBackgroundColor: '#10b981',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2,
+            pointHoverRadius: 8
         }]
     },
     options: {
         responsive: true,
         maintainAspectRatio: false,
-        indexAxis: 'y',
         plugins: {
-            legend: { display: false }
+            legend: { display: false },
+            tooltip: {
+                callbacks: {
+                    label: (context) => context.parsed.y.toLocaleString() + ' kg CO₂'
+                }
+            }
         },
         scales: {
-            x: {
+            y: {
                 beginAtZero: true,
                 ticks: {
                     callback: (value) => value.toLocaleString() + ' kg'

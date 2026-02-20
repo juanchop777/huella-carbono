@@ -122,7 +122,8 @@
     <div class="info-box">
         <strong>Generado:</strong> {{ now()->format('d/m/Y H:i:s') }}<br>
         <strong>Período:</strong> {{ $startDate->format('d/m/Y') }} al {{ $endDate->format('d/m/Y') }}<br>
-        <strong>Total de registros:</strong> {{ number_format($consumptions->count()) }}
+        <strong>Total de registros en el período:</strong> {{ number_format($totalRecords) }}@if($totalRecords > $detailLimit)<br>
+        <em>En el detalle siguiente se muestran los últimos {{ number_format($detailLimit) }} registros.</em>@endif
     </div>
 
     <!-- Estadísticas Principales -->
@@ -137,12 +138,12 @@
         </div>
         <div class="stat-card">
             <div class="label">Registros</div>
-            <div class="value">{{ number_format($consumptions->count()) }}</div>
+            <div class="value">{{ number_format($totalRecords) }}</div>
         </div>
     </div>
 
     <!-- Tabla de Consumos -->
-    <h2 class="section-title">📋 Detalle de Consumos por Unidad</h2>
+    <h2 class="section-title">📋 Detalle de Consumos por Unidad @if($totalRecords > $detailLimit)(últimos {{ number_format($detailLimit) }})@endif</h2>
     <table>
         <thead>
             <tr>
